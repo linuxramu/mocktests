@@ -14,6 +14,7 @@ export default {
 };
 
 export interface Env {
-  DB: D1Database;
-  AI_API_KEY: string;
+  // Environment variables will be defined here
+  // AI_API_KEY will be added as a secret later
+  // DB bindings will be added later when databases are configured
 }

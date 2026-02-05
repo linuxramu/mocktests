@@ -14,5 +14,6 @@ export default {
 };
 
 export interface Env {
-  DB: D1Database;
+  // Environment variables will be defined here
+  // DB bindings will be added later when databases are configured
 }

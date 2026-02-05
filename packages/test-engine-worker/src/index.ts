@@ -14,6 +14,6 @@ export default {
 };
 
 export interface Env {
-  DB: D1Database;
-  KV: KVNamespace;
+  // Environment variables will be defined here
+  // DB and KV bindings will be added later when databases are configured
 }

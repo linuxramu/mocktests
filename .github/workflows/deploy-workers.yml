@@ -108,7 +108,12 @@ jobs:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           workingDirectory: 'packages/auth-worker'
           environment: ${{ github.ref == 'refs/heads/main' && 'production' || 'development' }}
-        continue-on-error: true
+
+      - name: Verify auth worker deployment
+        if: success()
+        run: |
+          echo "✅ Auth worker deployed successfully"
+          echo "🔗 Worker URL: https://${{ steps.auth-worker-name.outputs.name }}.your-subdomain.workers.dev"
 
   deploy-test-engine-worker:
     needs: test-workers
@@ -172,7 +177,12 @@ jobs:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           workingDirectory: 'packages/test-engine-worker'
           environment: ${{ github.ref == 'refs/heads/main' && 'production' || 'development' }}
-        continue-on-error: true
+
+      - name: Verify test engine worker deployment
+        if: success()
+        run: |
+          echo "✅ Test engine worker deployed successfully"
+          echo "🔗 Worker URL: https://${{ steps.test-engine-worker-name.outputs.name }}.your-subdomain.workers.dev"
 
   deploy-ai-worker:
     needs: test-workers
@@ -236,7 +246,12 @@ jobs:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           workingDirectory: 'packages/ai-worker'
           environment: ${{ github.ref == 'refs/heads/main' && 'production' || 'development' }}
-        continue-on-error: true
+
+      - name: Verify AI worker deployment
+        if: success()
+        run: |
+          echo "✅ AI worker deployed successfully"
+          echo "🔗 Worker URL: https://${{ steps.ai-worker-name.outputs.name }}.your-subdomain.workers.dev"
 
   deploy-analytics-worker:
     needs: test-workers
@@ -300,4 +315,9 @@ jobs:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           workingDirectory: 'packages/analytics-worker'
           environment: ${{ github.ref == 'refs/heads/main' && 'production' || 'development' }}
-        continue-on-error: true
+
+      - name: Verify analytics worker deployment
+        if: success()
+        run: |
+          echo "✅ Analytics worker deployed successfully"
+          echo "🔗 Worker URL: https://${{ steps.analytics-worker-name.outputs.name }}.your-subdomain.workers.dev"

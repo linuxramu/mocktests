@@ -7,38 +7,10 @@ compatibility_date = "2023-12-01"
 name = "eamcet-test-engine-worker-dev"
 vars = { ENVIRONMENT = "development" }
 
-[[env.development.d1_databases]]
-binding = "DB"
-database_name = "eamcet-platform-db-dev"
-database_id = ""
-
-[[env.development.kv_namespaces]]
-binding = "KV"
-id = ""
-
 # Production environment
 [env.production]
 name = "eamcet-test-engine-worker-prod"
 vars = { ENVIRONMENT = "production" }
-
-[[env.production.d1_databases]]
-binding = "DB"
-database_name = "eamcet-platform-db"
-database_id = ""
-
-[[env.production.kv_namespaces]]
-binding = "KV"
-id = ""
-
-# Default bindings for local development
-[[d1_databases]]
-binding = "DB"
-database_name = "eamcet-platform-db-local"
-database_id = ""
-
-[[kv_namespaces]]
-binding = "KV"
-id = ""
 
 # Environment variables
 [vars]
