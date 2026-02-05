@@ -132,7 +132,7 @@ jobs:
         if: success()
         run: |
           echo "✅ Auth worker deployed successfully"
-          echo "🔗 Worker URL: https://${{ steps.auth-worker-name.outputs.name }}.your-subdomain.workers.dev"
+          echo "🔗 Worker URL: https://${{ steps.auth-worker-name.outputs.name }}.workers.dev"
 
   deploy-test-engine-worker:
     needs: test-workers
@@ -203,7 +203,7 @@ jobs:
         if: success()
         run: |
           echo "✅ Test engine worker deployed successfully"
-          echo "🔗 Worker URL: https://${{ steps.test-engine-worker-name.outputs.name }}.your-subdomain.workers.dev"
+          echo "🔗 Worker URL: https://${{ steps.test-engine-worker-name.outputs.name }}.workers.dev"
 
   deploy-ai-worker:
     needs: test-workers
@@ -274,7 +274,7 @@ jobs:
         if: success()
         run: |
           echo "✅ AI worker deployed successfully"
-          echo "🔗 Worker URL: https://${{ steps.ai-worker-name.outputs.name }}.your-subdomain.workers.dev"
+          echo "🔗 Worker URL: https://${{ steps.ai-worker-name.outputs.name }}.workers.dev"
 
   deploy-analytics-worker:
     needs: test-workers
@@ -345,4 +345,4 @@ jobs:
         if: success()
         run: |
           echo "✅ Analytics worker deployed successfully"
-          echo "🔗 Worker URL: https://${{ steps.analytics-worker-name.outputs.name }}.your-subdomain.workers.dev"
+          echo "🔗 Worker URL: https://${{ steps.analytics-worker-name.outputs.name }}.workers.dev"

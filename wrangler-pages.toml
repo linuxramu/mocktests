@@ -15,10 +15,10 @@ NODE_VERSION = "18"
 name = "eamcet-platform-dev"
 
 [env.development.vars]
-VITE_API_BASE_URL = "https://eamcet-auth-worker-dev.your-subdomain.workers.dev"
-VITE_TEST_ENGINE_URL = "https://eamcet-test-engine-worker-dev.your-subdomain.workers.dev"
-VITE_AI_WORKER_URL = "https://eamcet-ai-worker-dev.your-subdomain.workers.dev"
-VITE_ANALYTICS_URL = "https://eamcet-analytics-worker-dev.your-subdomain.workers.dev"
+VITE_API_BASE_URL = "https://eamcet-auth-worker-dev.workers.dev"
+VITE_TEST_ENGINE_URL = "https://eamcet-test-engine-worker-dev.workers.dev"
+VITE_AI_WORKER_URL = "https://eamcet-ai-worker-dev.workers.dev"
+VITE_ANALYTICS_URL = "https://eamcet-analytics-worker-dev.workers.dev"
 VITE_ENVIRONMENT = "development"
 
 # Production environment
@@ -26,8 +26,8 @@ VITE_ENVIRONMENT = "development"
 name = "eamcet-platform"
 
 [env.production.vars]
-VITE_API_BASE_URL = "https://eamcet-auth-worker-prod.your-subdomain.workers.dev"
-VITE_TEST_ENGINE_URL = "https://eamcet-test-engine-worker-prod.your-subdomain.workers.dev"
-VITE_AI_WORKER_URL = "https://eamcet-ai-worker-prod.your-subdomain.workers.dev"
-VITE_ANALYTICS_URL = "https://eamcet-analytics-worker-prod.your-subdomain.workers.dev"
+VITE_API_BASE_URL = "https://eamcet-auth-worker-prod.workers.dev"
+VITE_TEST_ENGINE_URL = "https://eamcet-test-engine-worker-prod.workers.dev"
+VITE_AI_WORKER_URL = "https://eamcet-ai-worker-prod.workers.dev"
+VITE_ANALYTICS_URL = "https://eamcet-analytics-worker-prod.workers.dev"
 VITE_ENVIRONMENT = "production"

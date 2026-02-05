@@ -2,7 +2,7 @@
 /*    /index.html   200
 
 # API redirects to Cloudflare Workers
-/api/auth/*    https://eamcet-auth-worker.your-subdomain.workers.dev/:splat    200
-/api/tests/*   https://eamcet-test-engine-worker.your-subdomain.workers.dev/:splat    200
-/api/ai/*      https://eamcet-ai-worker.your-subdomain.workers.dev/:splat    200
-/api/analytics/* https://eamcet-analytics-worker.your-subdomain.workers.dev/:splat    200
+/api/auth/*    https://eamcet-auth-worker.workers.dev/:splat    200
+/api/tests/*   https://eamcet-test-engine-worker.workers.dev/:splat    200
+/api/ai/*      https://eamcet-ai-worker.workers.dev/:splat    200
+/api/analytics/* https://eamcet-analytics-worker.workers.dev/:splat    200
