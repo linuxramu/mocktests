@@ -78,5 +78,5 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy packages/frontend/dist --project-name=${{ github.ref == 'refs/heads/main' && 'eamcet-platform' || 'eamcet-platform-dev' }} --compatibility-date=2023-12-01
+          command: pages deploy packages/frontend/dist --project-name=${{ github.ref == 'refs/heads/main' && 'eamcet-platform' || 'eamcet-platform-dev' }}
         continue-on-error: true
