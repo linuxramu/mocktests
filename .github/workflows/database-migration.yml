@@ -1,0 +1,77 @@
+name: Database Migration
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to migrate'
+        required: true
+        default: 'development'
+        type: choice
+        options:
+          - development
+          - production
+      migration_file:
+        description: 'Migration file to apply (optional)'
+        required: false
+        type: string
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+    name: Apply Database Migration
+    environment: ${{ github.event.inputs.environment }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Wrangler
+        run: npm install -g wrangler
+
+      - name: Authenticate with Cloudflare
+        run: echo "${{ secrets.CLOUDFLARE_API_TOKEN }}" | wrangler auth login --api-token
+
+      - name: Apply specific migration
+        if: github.event.inputs.migration_file != ''
+        run: |
+          DB_NAME="eamcet-platform-db"
+          if [ "${{ github.event.inputs.environment }}" = "development" ]; then
+            DB_NAME="${DB_NAME}-dev"
+          fi
+          wrangler d1 execute "$DB_NAME" --file="database/migrations/${{ github.event.inputs.migration_file }}"
+
+      - name: Apply all pending migrations
+        if: github.event.inputs.migration_file == ''
+        run: |
+          DB_NAME="eamcet-platform-db"
+          if [ "${{ github.event.inputs.environment }}" = "development" ]; then
+            DB_NAME="${DB_NAME}-dev"
+          fi
+          
+          # Apply schema if this is initial setup
+          wrangler d1 execute "$DB_NAME" --file="database/schema.sql"
+          
+          # Apply all migration files in order
+          for migration in database/migrations/*.sql; do
+            if [ -f "$migration" ]; then
+              echo "Applying migration: $migration"
+              wrangler d1 execute "$DB_NAME" --file="$migration"
+            fi
+          done
+
+      - name: Verify migration
+        run: |
+          DB_NAME="eamcet-platform-db"
+          if [ "${{ github.event.inputs.environment }}" = "development" ]; then
+            DB_NAME="${DB_NAME}-dev"
+          fi
+          wrangler d1 execute "$DB_NAME" --command="SELECT version, description, applied_at FROM schema_migrations ORDER BY version DESC LIMIT 5"

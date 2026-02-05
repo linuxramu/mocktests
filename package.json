@@ -1,0 +1,53 @@
+{
+  "name": "eamcet-mock-test-platform",
+  "version": "1.0.0",
+  "description": "EAMCET Mock Test Platform - AI-powered test preparation system",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "npm run build --workspaces",
+    "dev": "npm run dev --workspaces",
+    "test": "node scripts/test-runner.js all",
+    "test:unit": "node scripts/test-runner.js unit",
+    "test:pbt": "node scripts/test-runner.js pbt",
+    "test:integration": "npm run test:integration --workspaces",
+    "test:coverage": "node scripts/test-runner.js coverage",
+    "test:watch": "node scripts/test-runner.js watch",
+    "lint": "eslint . --ext .ts,.tsx,.js,.jsx",
+    "lint:fix": "eslint . --ext .ts,.tsx,.js,.jsx --fix",
+    "lint:frontend": "npm run lint --workspace=packages/frontend",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "type-check": "npm run type-check --workspaces",
+    "type-check:frontend": "npm run type-check --workspace=packages/frontend",
+    "build:frontend": "npm run build --workspace=packages/frontend",
+    "test:frontend": "npm run test --workspace=packages/frontend",
+    "deploy:workers:dev": "npm run deploy:dev --workspace=packages/auth-worker && npm run deploy:dev --workspace=packages/test-engine-worker && npm run deploy:dev --workspace=packages/ai-worker && npm run deploy:dev --workspace=packages/analytics-worker",
+    "deploy:workers:prod": "npm run deploy:prod --workspace=packages/auth-worker && npm run deploy:prod --workspace=packages/test-engine-worker && npm run deploy:prod --workspace=packages/ai-worker && npm run deploy:prod --workspace=packages/analytics-worker",
+    "setup:database": "./scripts/setup-database.sh",
+    "migrate:dev": "wrangler d1 execute eamcet-platform-db-dev --file=database/schema.sql",
+    "migrate:prod": "wrangler d1 execute eamcet-platform-db --file=database/schema.sql"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^8.45.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-react": "^7.33.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "prettier": "^3.0.0",
+    "typescript": "^5.1.0",
+    "jest": "^29.6.0",
+    "@types/jest": "^29.5.0",
+    "ts-jest": "^29.1.0",
+    "fast-check": "^3.12.0",
+    "vitest": "^0.34.0",
+    "@vitest/coverage-v8": "^0.34.0"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  }
+}

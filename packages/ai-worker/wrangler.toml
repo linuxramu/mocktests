@@ -1,0 +1,37 @@
+name = "eamcet-ai-worker"
+main = "src/index.ts"
+compatibility_date = "2023-12-01"
+
+# Development environment
+[env.development]
+name = "eamcet-ai-worker-dev"
+vars = { ENVIRONMENT = "development" }
+
+[[env.development.d1_databases]]
+binding = "DB"
+database_name = "eamcet-platform-db-dev"
+database_id = ""
+
+# Production environment
+[env.production]
+name = "eamcet-ai-worker-prod"
+vars = { ENVIRONMENT = "production" }
+
+[[env.production.d1_databases]]
+binding = "DB"
+database_name = "eamcet-platform-db"
+database_id = ""
+
+# Default bindings for local development
+[[d1_databases]]
+binding = "DB"
+database_name = "eamcet-platform-db-local"
+database_id = ""
+
+# Environment variables
+[vars]
+AI_API_KEY = ""
+AI_API_ENDPOINT = ""
+QUESTION_GENERATION_TIMEOUT = "30"
+MAX_QUESTIONS_PER_BATCH = "50"
+CORS_ORIGINS = "http://localhost:5173,https://eamcet-platform.pages.dev"

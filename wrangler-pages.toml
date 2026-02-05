@@ -1,0 +1,33 @@
+# Cloudflare Pages configuration
+name = "eamcet-mock-test-platform"
+compatibility_date = "2023-12-01"
+
+[build]
+command = "npm run build"
+cwd = "packages/frontend"
+destination_dir = "dist"
+
+[build.environment_variables]
+NODE_VERSION = "18"
+
+# Development environment
+[env.development]
+name = "eamcet-platform-dev"
+
+[env.development.vars]
+VITE_API_BASE_URL = "https://eamcet-auth-worker-dev.your-subdomain.workers.dev"
+VITE_TEST_ENGINE_URL = "https://eamcet-test-engine-worker-dev.your-subdomain.workers.dev"
+VITE_AI_WORKER_URL = "https://eamcet-ai-worker-dev.your-subdomain.workers.dev"
+VITE_ANALYTICS_URL = "https://eamcet-analytics-worker-dev.your-subdomain.workers.dev"
+VITE_ENVIRONMENT = "development"
+
+# Production environment
+[env.production]
+name = "eamcet-platform"
+
+[env.production.vars]
+VITE_API_BASE_URL = "https://eamcet-auth-worker-prod.your-subdomain.workers.dev"
+VITE_TEST_ENGINE_URL = "https://eamcet-test-engine-worker-prod.your-subdomain.workers.dev"
+VITE_AI_WORKER_URL = "https://eamcet-ai-worker-prod.your-subdomain.workers.dev"
+VITE_ANALYTICS_URL = "https://eamcet-analytics-worker-prod.your-subdomain.workers.dev"
+VITE_ENVIRONMENT = "production"

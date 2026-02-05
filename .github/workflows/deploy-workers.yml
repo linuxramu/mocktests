@@ -1,0 +1,156 @@
+name: Deploy Cloudflare Workers
+
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      - 'packages/auth-worker/**'
+      - 'packages/test-engine-worker/**'
+      - 'packages/ai-worker/**'
+      - 'packages/analytics-worker/**'
+      - '.github/workflows/deploy-workers.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'packages/auth-worker/**'
+      - 'packages/test-engine-worker/**'
+      - 'packages/ai-worker/**'
+      - 'packages/analytics-worker/**'
+
+jobs:
+  test-workers:
+    runs-on: ubuntu-latest
+    name: Test Workers
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm run test
+
+      - name: Run linting
+        run: npm run lint
+
+      - name: Type check
+        run: npm run type-check
+
+  deploy-auth-worker:
+    needs: test-workers
+    runs-on: ubuntu-latest
+    name: Deploy Auth Worker
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Deploy to Cloudflare Workers
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          workingDirectory: 'packages/auth-worker'
+          environment: ${{ github.ref == 'refs/heads/main' && 'production' || 'development' }}
+          secrets: |
+            JWT_SECRET
+        env:
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+
+  deploy-test-engine-worker:
+    needs: test-workers
+    runs-on: ubuntu-latest
+    name: Deploy Test Engine Worker
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Deploy to Cloudflare Workers
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          workingDirectory: 'packages/test-engine-worker'
+          environment: ${{ github.ref == 'refs/heads/main' && 'production' || 'development' }}
+
+  deploy-ai-worker:
+    needs: test-workers
+    runs-on: ubuntu-latest
+    name: Deploy AI Worker
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Deploy to Cloudflare Workers
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          workingDirectory: 'packages/ai-worker'
+          environment: ${{ github.ref == 'refs/heads/main' && 'production' || 'development' }}
+          secrets: |
+            AI_API_KEY
+        env:
+          AI_API_KEY: ${{ secrets.AI_API_KEY }}
+
+  deploy-analytics-worker:
+    needs: test-workers
+    runs-on: ubuntu-latest
+    name: Deploy Analytics Worker
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Deploy to Cloudflare Workers
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          workingDirectory: 'packages/analytics-worker'
+          environment: ${{ github.ref == 'refs/heads/main' && 'production' || 'development' }}

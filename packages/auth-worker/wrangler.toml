@@ -1,0 +1,48 @@
+name = "eamcet-auth-worker"
+main = "src/index.ts"
+compatibility_date = "2023-12-01"
+
+# Development environment
+[env.development]
+name = "eamcet-auth-worker-dev"
+vars = { ENVIRONMENT = "development" }
+
+[[env.development.d1_databases]]
+binding = "DB"
+database_name = "eamcet-platform-db-dev"
+database_id = ""
+
+[[env.development.kv_namespaces]]
+binding = "KV"
+id = ""
+
+# Production environment
+[env.production]
+name = "eamcet-auth-worker-prod"
+vars = { ENVIRONMENT = "production" }
+
+[[env.production.d1_databases]]
+binding = "DB"
+database_name = "eamcet-platform-db"
+database_id = ""
+
+[[env.production.kv_namespaces]]
+binding = "KV"
+id = ""
+
+# Default bindings for local development
+[[d1_databases]]
+binding = "DB"
+database_name = "eamcet-platform-db-local"
+database_id = ""
+
+[[kv_namespaces]]
+binding = "KV"
+id = ""
+
+# Environment variables
+[vars]
+JWT_SECRET = ""
+BCRYPT_ROUNDS = "12"
+SESSION_TIMEOUT = "86400"
+CORS_ORIGINS = "http://localhost:5173,https://eamcet-platform.pages.dev"

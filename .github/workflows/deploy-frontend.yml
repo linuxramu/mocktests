@@ -1,0 +1,81 @@
+name: Deploy Frontend to Cloudflare Pages
+
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      - 'packages/frontend/**'
+      - '.github/workflows/deploy-frontend.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'packages/frontend/**'
+
+jobs:
+  test-frontend:
+    runs-on: ubuntu-latest
+    name: Test Frontend
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run frontend tests
+        run: npm run test:frontend
+
+      - name: Run frontend linting
+        run: npm run lint:frontend
+
+      - name: Type check frontend
+        run: npm run type-check:frontend
+
+      - name: Build frontend
+        run: npm run build:frontend
+        env:
+          VITE_API_BASE_URL: ${{ github.ref == 'refs/heads/main' && 'https://eamcet-auth-worker-prod.your-subdomain.workers.dev' || 'https://eamcet-auth-worker-dev.your-subdomain.workers.dev' }}
+          VITE_TEST_ENGINE_URL: ${{ github.ref == 'refs/heads/main' && 'https://eamcet-test-engine-worker-prod.your-subdomain.workers.dev' || 'https://eamcet-test-engine-worker-dev.your-subdomain.workers.dev' }}
+          VITE_AI_WORKER_URL: ${{ github.ref == 'refs/heads/main' && 'https://eamcet-ai-worker-prod.your-subdomain.workers.dev' || 'https://eamcet-ai-worker-dev.your-subdomain.workers.dev' }}
+          VITE_ANALYTICS_URL: ${{ github.ref == 'refs/heads/main' && 'https://eamcet-analytics-worker-prod.your-subdomain.workers.dev' || 'https://eamcet-analytics-worker-dev.your-subdomain.workers.dev' }}
+          VITE_ENVIRONMENT: ${{ github.ref == 'refs/heads/main' && 'production' || 'development' }}
+
+  deploy-frontend:
+    needs: test-frontend
+    runs-on: ubuntu-latest
+    name: Deploy to Cloudflare Pages
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build frontend
+        run: npm run build:frontend
+        env:
+          VITE_API_BASE_URL: ${{ github.ref == 'refs/heads/main' && 'https://eamcet-auth-worker-prod.your-subdomain.workers.dev' || 'https://eamcet-auth-worker-dev.your-subdomain.workers.dev' }}
+          VITE_TEST_ENGINE_URL: ${{ github.ref == 'refs/heads/main' && 'https://eamcet-test-engine-worker-prod.your-subdomain.workers.dev' || 'https://eamcet-test-engine-worker-dev.your-subdomain.workers.dev' }}
+          VITE_AI_WORKER_URL: ${{ github.ref == 'refs/heads/main' && 'https://eamcet-ai-worker-prod.your-subdomain.workers.dev' || 'https://eamcet-ai-worker-dev.your-subdomain.workers.dev' }}
+          VITE_ANALYTICS_URL: ${{ github.ref == 'refs/heads/main' && 'https://eamcet-analytics-worker-prod.your-subdomain.workers.dev' || 'https://eamcet-analytics-worker-dev.your-subdomain.workers.dev' }}
+          VITE_ENVIRONMENT: ${{ github.ref == 'refs/heads/main' && 'production' || 'development' }}
+
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy packages/frontend/dist --project-name=${{ github.ref == 'refs/heads/main' && 'eamcet-platform' || 'eamcet-platform-dev' }} --compatibility-date=2023-12-01
