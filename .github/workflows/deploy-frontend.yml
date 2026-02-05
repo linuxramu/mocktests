@@ -87,11 +87,8 @@ jobs:
       - name: Check if Cloudflare Pages project exists
         id: check-project
         run: |
-          # Install wrangler if not available
-          npm install -g wrangler
-          
-          # Check if project exists
-          if wrangler pages project list | grep -q "${{ steps.project.outputs.name }}"; then
+          # Check if project exists using npx to ensure correct Node.js version
+          if npx wrangler pages project list | grep -q "${{ steps.project.outputs.name }}"; then
             echo "exists=true" >> $GITHUB_OUTPUT
             echo "✅ Project ${{ steps.project.outputs.name }} already exists"
           else
@@ -107,7 +104,7 @@ jobs:
         if: steps.check-project.outputs.exists == 'false'
         run: |
           echo "🚀 Creating new Cloudflare Pages project: ${{ steps.project.outputs.name }}"
-          wrangler pages project create ${{ steps.project.outputs.name }} --production-branch=main
+          npx wrangler pages project create ${{ steps.project.outputs.name }} --production-branch=main
           echo "✅ Successfully created project: ${{ steps.project.outputs.name }}"
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
