@@ -12,7 +12,9 @@
     "test:watch": "vitest",
     "test:pbt": "vitest --run --reporter=verbose **/*.pbt.test.{ts,tsx}",
     "test:coverage": "vitest --run --coverage",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "lint": "eslint src --ext .ts,.tsx --max-warnings 0",
+    "lint:fix": "eslint src --ext .ts,.tsx --fix"
   },
   "dependencies": {
     "react": "^18.2.0",
