@@ -79,17 +79,32 @@ function runTestsForPackage(packageName, testType = 'all') {
   };
   
   if (testType === 'all') {
-    // Run unit tests and property-based tests
+    // Run unit tests first
     const unitResult = executeCommand(commands.unit);
     
-    // Only run PBT if unit tests pass and package has PBT tests
+    // Only run PBT if unit tests pass
     if (unitResult.success) {
+      log('Running property-based tests...', 'blue');
       const pbtResult = executeCommand(commands.pbt);
-      return pbtResult.success; // Return PBT result if unit tests pass
+      
+      // If PBT fails due to no test files, treat as success
+      if (!pbtResult.success && pbtResult.error && pbtResult.error.message.includes('No test files found')) {
+        log(`No PBT test files found for ${packageName}, skipping...`, 'yellow');
+        return true; // Treat as success
+      }
+      
+      return pbtResult.success;
     }
     return unitResult.success;
   } else if (commands[testType]) {
     const result = executeCommand(commands[testType]);
+    
+    // Handle "no test files found" for PBT specifically
+    if (!result.success && testType === 'pbt' && result.error && result.error.message.includes('No test files found')) {
+      log(`No PBT test files found for ${packageName}, skipping...`, 'yellow');
+      return true;
+    }
+    
     return result.success;
   } else {
     log(`Unknown test type: ${testType}`, 'red');

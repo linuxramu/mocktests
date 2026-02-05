@@ -10,7 +10,7 @@
     "preview": "vite preview",
     "test": "vitest --run",
     "test:watch": "vitest",
-    "test:pbt": "vitest --run --reporter=verbose **/*.pbt.test.{ts,tsx}",
+    "test:pbt": "vitest --run --reporter=verbose **/*.pbt.test.{ts,tsx} --passWithNoTests",
     "test:coverage": "vitest --run --coverage",
     "type-check": "tsc --noEmit",
     "lint": "eslint src --ext .ts,.tsx --max-warnings 0",

@@ -12,7 +12,7 @@
     "build": "tsc",
     "test": "vitest --run",
     "test:watch": "vitest",
-    "test:pbt": "vitest --run --reporter=verbose",
+    "test:pbt": "vitest --run --reporter=verbose **/*.pbt.test.ts --passWithNoTests",
     "test:coverage": "vitest --run --coverage",
     "type-check": "tsc --noEmit"
   },
