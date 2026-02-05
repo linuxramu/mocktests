@@ -5,22 +5,22 @@ compatibility_date = "2023-12-01"
 # Development environment
 [env.development]
 name = "eamcet-ai-worker-dev"
-vars = { 
-  ENVIRONMENT = "development",
-  QUESTION_GENERATION_TIMEOUT = "30",
-  MAX_QUESTIONS_PER_BATCH = "50",
-  CORS_ORIGINS = "http://localhost:5173,https://eamcet-platform.pages.dev"
-}
+
+[env.development.vars]
+ENVIRONMENT = "development"
+QUESTION_GENERATION_TIMEOUT = "30"
+MAX_QUESTIONS_PER_BATCH = "50"
+CORS_ORIGINS = "http://localhost:5173,https://eamcet-platform.pages.dev"
 
 # Production environment
 [env.production]
 name = "eamcet-ai-worker-prod"
-vars = { 
-  ENVIRONMENT = "production",
-  QUESTION_GENERATION_TIMEOUT = "30",
-  MAX_QUESTIONS_PER_BATCH = "50",
-  CORS_ORIGINS = "http://localhost:5173,https://eamcet-platform.pages.dev"
-}
+
+[env.production.vars]
+ENVIRONMENT = "production"
+QUESTION_GENERATION_TIMEOUT = "30"
+MAX_QUESTIONS_PER_BATCH = "50"
+CORS_ORIGINS = "http://localhost:5173,https://eamcet-platform.pages.dev"
 
 # Default environment variables for local development
 [vars]

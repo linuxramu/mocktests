@@ -5,24 +5,24 @@ compatibility_date = "2023-12-01"
 # Development environment
 [env.development]
 name = "eamcet-test-engine-worker-dev"
-vars = { 
-  ENVIRONMENT = "development",
-  TEST_DURATION_LIMIT = "10800",
-  MAX_QUESTIONS_PER_TEST = "160",
-  WEBSOCKET_TIMEOUT = "300",
-  CORS_ORIGINS = "http://localhost:5173,https://eamcet-platform.pages.dev"
-}
+
+[env.development.vars]
+ENVIRONMENT = "development"
+TEST_DURATION_LIMIT = "10800"
+MAX_QUESTIONS_PER_TEST = "160"
+WEBSOCKET_TIMEOUT = "300"
+CORS_ORIGINS = "http://localhost:5173,https://eamcet-platform.pages.dev"
 
 # Production environment
 [env.production]
 name = "eamcet-test-engine-worker-prod"
-vars = { 
-  ENVIRONMENT = "production",
-  TEST_DURATION_LIMIT = "10800",
-  MAX_QUESTIONS_PER_TEST = "160",
-  WEBSOCKET_TIMEOUT = "300",
-  CORS_ORIGINS = "http://localhost:5173,https://eamcet-platform.pages.dev"
-}
+
+[env.production.vars]
+ENVIRONMENT = "production"
+TEST_DURATION_LIMIT = "10800"
+MAX_QUESTIONS_PER_TEST = "160"
+WEBSOCKET_TIMEOUT = "300"
+CORS_ORIGINS = "http://localhost:5173,https://eamcet-platform.pages.dev"
 
 # Default environment variables for local development
 [vars]

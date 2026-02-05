@@ -5,22 +5,22 @@ compatibility_date = "2023-12-01"
 # Development environment
 [env.development]
 name = "eamcet-auth-worker-dev"
-vars = { 
-  ENVIRONMENT = "development",
-  BCRYPT_ROUNDS = "12",
-  SESSION_TIMEOUT = "86400",
-  CORS_ORIGINS = "http://localhost:5173,https://eamcet-platform.pages.dev"
-}
+
+[env.development.vars]
+ENVIRONMENT = "development"
+BCRYPT_ROUNDS = "12"
+SESSION_TIMEOUT = "86400"
+CORS_ORIGINS = "http://localhost:5173,https://eamcet-platform.pages.dev"
 
 # Production environment
 [env.production]
 name = "eamcet-auth-worker-prod"
-vars = { 
-  ENVIRONMENT = "production",
-  BCRYPT_ROUNDS = "12",
-  SESSION_TIMEOUT = "86400",
-  CORS_ORIGINS = "http://localhost:5173,https://eamcet-platform.pages.dev"
-}
+
+[env.production.vars]
+ENVIRONMENT = "production"
+BCRYPT_ROUNDS = "12"
+SESSION_TIMEOUT = "86400"
+CORS_ORIGINS = "http://localhost:5173,https://eamcet-platform.pages.dev"
 
 # Default environment variables for local development
 [vars]
