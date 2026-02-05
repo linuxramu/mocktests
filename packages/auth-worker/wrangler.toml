@@ -42,7 +42,6 @@ id = ""
 
 # Environment variables
 [vars]
-JWT_SECRET = ""
 BCRYPT_ROUNDS = "12"
 SESSION_TIMEOUT = "86400"
 CORS_ORIGINS = "http://localhost:5173,https://eamcet-platform.pages.dev"

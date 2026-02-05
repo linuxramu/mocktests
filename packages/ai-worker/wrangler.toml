@@ -30,8 +30,6 @@ database_id = ""
 
 # Environment variables
 [vars]
-AI_API_KEY = ""
-AI_API_ENDPOINT = ""
 QUESTION_GENERATION_TIMEOUT = "30"
 MAX_QUESTIONS_PER_BATCH = "50"
 CORS_ORIGINS = "http://localhost:5173,https://eamcet-platform.pages.dev"
