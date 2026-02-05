@@ -5,14 +5,24 @@ compatibility_date = "2023-12-01"
 # Development environment
 [env.development]
 name = "eamcet-analytics-worker-dev"
-vars = { ENVIRONMENT = "development" }
+vars = { 
+  ENVIRONMENT = "development",
+  ANALYTICS_CALCULATION_TIMEOUT = "10",
+  CACHE_TTL = "3600",
+  CORS_ORIGINS = "http://localhost:5173,https://eamcet-platform.pages.dev"
+}
 
 # Production environment
 [env.production]
 name = "eamcet-analytics-worker-prod"
-vars = { ENVIRONMENT = "production" }
+vars = { 
+  ENVIRONMENT = "production",
+  ANALYTICS_CALCULATION_TIMEOUT = "10",
+  CACHE_TTL = "3600",
+  CORS_ORIGINS = "http://localhost:5173,https://eamcet-platform.pages.dev"
+}
 
-# Environment variables
+# Default environment variables for local development
 [vars]
 ANALYTICS_CALCULATION_TIMEOUT = "10"
 CACHE_TTL = "3600"
