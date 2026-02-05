@@ -7,7 +7,8 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "npm run build --workspaces",
+    "build": "npm run build --workspace=packages/shared && npm run build --workspaces",
+    "build:shared": "npm run build --workspace=packages/shared",
     "dev": "npm run dev --workspaces",
     "test": "node scripts/test-runner.js all",
     "test:unit": "node scripts/test-runner.js unit",
@@ -20,7 +21,7 @@
     "lint:frontend": "npm run lint --workspace=packages/frontend",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "type-check": "npm run type-check --workspaces",
+    "type-check": "npm run build:shared && npm run type-check --workspaces",
     "type-check:frontend": "npm run type-check --workspace=packages/frontend",
     "build:frontend": "npm run build --workspace=packages/frontend",
     "test:frontend": "npm run test --workspace=packages/frontend",
