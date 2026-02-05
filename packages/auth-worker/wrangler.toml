@@ -7,38 +7,10 @@ compatibility_date = "2023-12-01"
 name = "eamcet-auth-worker-dev"
 vars = { ENVIRONMENT = "development" }
 
-[[env.development.d1_databases]]
-binding = "DB"
-database_name = "eamcet-platform-db-dev"
-database_id = "placeholder-dev"
-
-[[env.development.kv_namespaces]]
-binding = "KV"
-id = "placeholder-kv-dev"
-
 # Production environment
 [env.production]
 name = "eamcet-auth-worker-prod"
 vars = { ENVIRONMENT = "production" }
-
-[[env.production.d1_databases]]
-binding = "DB"
-database_name = "eamcet-platform-db"
-database_id = "placeholder-prod"
-
-[[env.production.kv_namespaces]]
-binding = "KV"
-id = "placeholder-kv-prod"
-
-# Default bindings for local development
-[[d1_databases]]
-binding = "DB"
-database_name = "eamcet-platform-db-local"
-database_id = "placeholder-local"
-
-[[kv_namespaces]]
-binding = "KV"
-id = "placeholder-kv-local"
 
 # Environment variables
 [vars]

@@ -7,24 +7,17 @@ export default {
     env: Env,
     ctx: ExecutionContext
   ): Promise<Response> {
-    // Check if database is available
-    if (!env.DB) {
-      return new Response('Authentication Worker - Database not configured yet', {
-        status: 503,
-        headers: { 'Content-Type': 'text/plain' },
-      });
-    }
-
-    return new Response('Authentication Worker - Ready', {
-      headers: { 'Content-Type': 'text/plain' },
+    return new Response('Authentication Worker - Basic deployment successful', {
+      headers: { 
+        'Content-Type': 'text/plain',
+        'Access-Control-Allow-Origin': '*'
+      },
     });
   },
 };
 
 export interface Env {
   // Environment variables
-  DB?: D1Database; // Optional - will be undefined if not configured
-  KV?: KVNamespace; // Optional - will be undefined if not configured
   ENVIRONMENT?: string;
   BCRYPT_ROUNDS?: string;
   SESSION_TIMEOUT?: string;

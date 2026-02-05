@@ -101,6 +101,22 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         continue-on-error: true
 
+      - name: Debug wrangler configuration
+        run: |
+          cd packages/auth-worker
+          echo "=== Wrangler version ==="
+          npx wrangler --version
+          echo "=== Wrangler config check ==="
+          npx wrangler whoami || echo "Authentication check failed"
+          echo "=== Current directory contents ==="
+          ls -la
+          echo "=== Wrangler.toml contents ==="
+          cat wrangler.toml
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        continue-on-error: true
+
       - name: Deploy to Cloudflare Workers
         uses: cloudflare/wrangler-action@v3
         with:
