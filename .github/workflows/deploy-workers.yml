@@ -70,6 +70,37 @@ jobs:
       - name: Build auth worker
         run: npm run build --workspace=packages/auth-worker
 
+      - name: Set worker name for auth worker
+        id: auth-worker-name
+        run: |
+          if [ "${{ github.ref }}" = "refs/heads/main" ]; then
+            echo "name=eamcet-auth-worker-prod" >> $GITHUB_OUTPUT
+          else
+            echo "name=eamcet-auth-worker-dev" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Check if auth worker exists
+        id: check-auth-worker
+        run: |
+          cd packages/auth-worker
+          if npx wrangler whoami > /dev/null 2>&1; then
+            echo "✅ Wrangler authenticated successfully"
+            if npx wrangler list | grep -q "${{ steps.auth-worker-name.outputs.name }}"; then
+              echo "exists=true" >> $GITHUB_OUTPUT
+              echo "✅ Worker ${{ steps.auth-worker-name.outputs.name }} already exists"
+            else
+              echo "exists=false" >> $GITHUB_OUTPUT
+              echo "⚠️ Worker ${{ steps.auth-worker-name.outputs.name }} does not exist"
+            fi
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+            echo "⚠️ Wrangler authentication failed, will attempt deployment anyway"
+          fi
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        continue-on-error: true
+
       - name: Deploy to Cloudflare Workers
         uses: cloudflare/wrangler-action@v3
         with:
@@ -102,6 +133,37 @@ jobs:
 
       - name: Build test engine worker
         run: npm run build --workspace=packages/test-engine-worker
+
+      - name: Set worker name for test engine worker
+        id: test-engine-worker-name
+        run: |
+          if [ "${{ github.ref }}" = "refs/heads/main" ]; then
+            echo "name=eamcet-test-engine-worker-prod" >> $GITHUB_OUTPUT
+          else
+            echo "name=eamcet-test-engine-worker-dev" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Check if test engine worker exists
+        id: check-test-engine-worker
+        run: |
+          cd packages/test-engine-worker
+          if npx wrangler whoami > /dev/null 2>&1; then
+            echo "✅ Wrangler authenticated successfully"
+            if npx wrangler list | grep -q "${{ steps.test-engine-worker-name.outputs.name }}"; then
+              echo "exists=true" >> $GITHUB_OUTPUT
+              echo "✅ Worker ${{ steps.test-engine-worker-name.outputs.name }} already exists"
+            else
+              echo "exists=false" >> $GITHUB_OUTPUT
+              echo "⚠️ Worker ${{ steps.test-engine-worker-name.outputs.name }} does not exist"
+            fi
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+            echo "⚠️ Wrangler authentication failed, will attempt deployment anyway"
+          fi
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        continue-on-error: true
 
       - name: Deploy to Cloudflare Workers
         uses: cloudflare/wrangler-action@v3
@@ -136,6 +198,37 @@ jobs:
       - name: Build AI worker
         run: npm run build --workspace=packages/ai-worker
 
+      - name: Set worker name for AI worker
+        id: ai-worker-name
+        run: |
+          if [ "${{ github.ref }}" = "refs/heads/main" ]; then
+            echo "name=eamcet-ai-worker-prod" >> $GITHUB_OUTPUT
+          else
+            echo "name=eamcet-ai-worker-dev" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Check if AI worker exists
+        id: check-ai-worker
+        run: |
+          cd packages/ai-worker
+          if npx wrangler whoami > /dev/null 2>&1; then
+            echo "✅ Wrangler authenticated successfully"
+            if npx wrangler list | grep -q "${{ steps.ai-worker-name.outputs.name }}"; then
+              echo "exists=true" >> $GITHUB_OUTPUT
+              echo "✅ Worker ${{ steps.ai-worker-name.outputs.name }} already exists"
+            else
+              echo "exists=false" >> $GITHUB_OUTPUT
+              echo "⚠️ Worker ${{ steps.ai-worker-name.outputs.name }} does not exist"
+            fi
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+            echo "⚠️ Wrangler authentication failed, will attempt deployment anyway"
+          fi
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        continue-on-error: true
+
       - name: Deploy to Cloudflare Workers
         uses: cloudflare/wrangler-action@v3
         with:
@@ -168,6 +261,37 @@ jobs:
 
       - name: Build analytics worker
         run: npm run build --workspace=packages/analytics-worker
+
+      - name: Set worker name for analytics worker
+        id: analytics-worker-name
+        run: |
+          if [ "${{ github.ref }}" = "refs/heads/main" ]; then
+            echo "name=eamcet-analytics-worker-prod" >> $GITHUB_OUTPUT
+          else
+            echo "name=eamcet-analytics-worker-dev" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Check if analytics worker exists
+        id: check-analytics-worker
+        run: |
+          cd packages/analytics-worker
+          if npx wrangler whoami > /dev/null 2>&1; then
+            echo "✅ Wrangler authenticated successfully"
+            if npx wrangler list | grep -q "${{ steps.analytics-worker-name.outputs.name }}"; then
+              echo "exists=true" >> $GITHUB_OUTPUT
+              echo "✅ Worker ${{ steps.analytics-worker-name.outputs.name }} already exists"
+            else
+              echo "exists=false" >> $GITHUB_OUTPUT
+              echo "⚠️ Worker ${{ steps.analytics-worker-name.outputs.name }} does not exist"
+            fi
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+            echo "⚠️ Wrangler authentication failed, will attempt deployment anyway"
+          fi
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        continue-on-error: true
 
       - name: Deploy to Cloudflare Workers
         uses: cloudflare/wrangler-action@v3
