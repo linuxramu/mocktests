@@ -219,11 +219,9 @@ export const runPropertyTest = <T>(
   predicate: (value: T) => boolean | void,
   config: Partial<fc.Parameters<T>> = {}
 ): void => {
-  fc.assert(
-    fc.property(arbitrary, predicate),
-    {
-      ...PBT_CONFIG,
-      ...config,
-    }
-  );
+  const property = fc.property(arbitrary, predicate);
+  fc.assert(property as any, {
+    ...PBT_CONFIG,
+    ...config,
+  });
 };

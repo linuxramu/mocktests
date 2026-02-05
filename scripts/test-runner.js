@@ -81,8 +81,13 @@ function runTestsForPackage(packageName, testType = 'all') {
   if (testType === 'all') {
     // Run unit tests and property-based tests
     const unitResult = executeCommand(commands.unit);
-    const pbtResult = executeCommand(commands.pbt);
-    return unitResult.success && pbtResult.success;
+    
+    // Only run PBT if unit tests pass and package has PBT tests
+    if (unitResult.success) {
+      const pbtResult = executeCommand(commands.pbt);
+      return pbtResult.success; // Return PBT result if unit tests pass
+    }
+    return unitResult.success;
   } else if (commands[testType]) {
     const result = executeCommand(commands[testType]);
     return result.success;

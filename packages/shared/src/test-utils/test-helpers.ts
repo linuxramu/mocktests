@@ -24,6 +24,7 @@ export const createMockFunction = <T extends (...args: any[]) => any>() => {
     instances: [],
     contexts: [],
     lastCall: undefined,
+    invocationCallOrder: [],
   };
   
   return mockFn;
@@ -155,7 +156,8 @@ export const createMockResponse = (
   formData: jest.fn().mockResolvedValue(new FormData()),
   json: jest.fn().mockResolvedValue(body),
   text: jest.fn().mockResolvedValue(body ? JSON.stringify(body) : ''),
-} as Response);
+  bytes: jest.fn().mockResolvedValue(new Uint8Array()),
+} as unknown as Response);
 
 /**
  * Test environment setup helpers

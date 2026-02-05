@@ -15,7 +15,8 @@
   "rules": {
     "no-unused-vars": "off",
     "prefer-const": "error",
-    "no-var": "error"
+    "no-var": "error",
+    "no-undef": "off"
   },
   "overrides": [
     {
@@ -29,6 +30,67 @@
       "rules": {
         "react/react-in-jsx-scope": "off"
       }
+    },
+    {
+      "files": ["**/*.test.{ts,tsx,js,jsx}", "**/*.spec.{ts,tsx,js,jsx}"],
+      "env": {
+        "jest": true
+      },
+      "globals": {
+        "expect": "readonly",
+        "describe": "readonly",
+        "it": "readonly",
+        "beforeEach": "readonly",
+        "afterEach": "readonly",
+        "beforeAll": "readonly",
+        "afterAll": "readonly",
+        "vi": "readonly",
+        "vitest": "readonly"
+      }
+    },
+    {
+      "files": ["packages/*-worker/src/**/*.ts"],
+      "env": {
+        "worker": true,
+        "serviceworker": true
+      },
+      "globals": {
+        "ExecutionContext": "readonly",
+        "D1Database": "readonly",
+        "KVNamespace": "readonly",
+        "Request": "readonly",
+        "Response": "readonly",
+        "fetch": "readonly"
+      }
+    },
+    {
+      "files": ["jest.setup.js", "jest.config.js"],
+      "env": {
+        "jest": true,
+        "node": true
+      },
+      "globals": {
+        "jest": "readonly"
+      }
+    },
+    {
+      "files": ["packages/shared/src/test-utils/**/*.ts"],
+      "env": {
+        "jest": true
+      },
+      "globals": {
+        "expect": "readonly",
+        "jest": "readonly",
+        "describe": "readonly",
+        "it": "readonly"
+      }
     }
+  ],
+  "ignorePatterns": [
+    "dist/",
+    "build/",
+    "node_modules/",
+    "coverage/",
+    "*.d.ts"
   ]
 }

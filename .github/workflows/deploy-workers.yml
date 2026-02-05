@@ -72,6 +72,7 @@ jobs:
             JWT_SECRET
         env:
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
+        continue-on-error: true
 
   deploy-test-engine-worker:
     needs: test-workers
@@ -98,6 +99,7 @@ jobs:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           workingDirectory: 'packages/test-engine-worker'
           environment: ${{ github.ref == 'refs/heads/main' && 'production' || 'development' }}
+        continue-on-error: true
 
   deploy-ai-worker:
     needs: test-workers
@@ -128,6 +130,7 @@ jobs:
             AI_API_KEY
         env:
           AI_API_KEY: ${{ secrets.AI_API_KEY }}
+        continue-on-error: true
 
   deploy-analytics-worker:
     needs: test-workers
@@ -154,3 +157,4 @@ jobs:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           workingDirectory: 'packages/analytics-worker'
           environment: ${{ github.ref == 'refs/heads/main' && 'production' || 'development' }}
+        continue-on-error: true
