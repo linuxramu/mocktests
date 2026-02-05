@@ -73,10 +73,61 @@ jobs:
           VITE_ANALYTICS_URL: ${{ github.ref == 'refs/heads/main' && 'https://eamcet-analytics-worker-prod.your-subdomain.workers.dev' || 'https://eamcet-analytics-worker-dev.your-subdomain.workers.dev' }}
           VITE_ENVIRONMENT: ${{ github.ref == 'refs/heads/main' && 'production' || 'development' }}
 
+      - name: Set project name
+        id: project
+        run: |
+          if [ "${{ github.ref }}" = "refs/heads/main" ]; then
+            echo "name=eamcet-platform" >> $GITHUB_OUTPUT
+            echo "environment=production" >> $GITHUB_OUTPUT
+          else
+            echo "name=eamcet-platform-dev" >> $GITHUB_OUTPUT
+            echo "environment=development" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Check if Cloudflare Pages project exists
+        id: check-project
+        run: |
+          # Install wrangler if not available
+          npm install -g wrangler
+          
+          # Check if project exists
+          if wrangler pages project list | grep -q "${{ steps.project.outputs.name }}"; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+            echo "✅ Project ${{ steps.project.outputs.name }} already exists"
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+            echo "⚠️ Project ${{ steps.project.outputs.name }} does not exist"
+          fi
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        continue-on-error: true
+
+      - name: Create Cloudflare Pages project if it doesn't exist
+        if: steps.check-project.outputs.exists == 'false'
+        run: |
+          echo "🚀 Creating new Cloudflare Pages project: ${{ steps.project.outputs.name }}"
+          wrangler pages project create ${{ steps.project.outputs.name }} --production-branch=main
+          echo "✅ Successfully created project: ${{ steps.project.outputs.name }}"
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        continue-on-error: true
+
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy packages/frontend/dist --project-name=${{ github.ref == 'refs/heads/main' && 'eamcet-platform' || 'eamcet-platform-dev' }}
+          command: pages deploy packages/frontend/dist --project-name=${{ steps.project.outputs.name }}
         continue-on-error: true
+
+      - name: Get deployment URL
+        run: |
+          echo "🌐 Deployment completed for: ${{ steps.project.outputs.name }}"
+          echo "🔗 Your app should be available at: https://${{ steps.project.outputs.name }}.pages.dev"
+          if [ "${{ steps.project.outputs.environment }}" = "production" ]; then
+            echo "🚀 Production deployment: https://${{ steps.project.outputs.name }}.pages.dev"
+          else
+            echo "🧪 Development deployment: https://${{ steps.project.outputs.name }}.pages.dev"
+          fi
