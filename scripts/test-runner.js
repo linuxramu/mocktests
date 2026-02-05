@@ -59,52 +59,65 @@ function getPackages() {
   if (!fs.existsSync(packagesDir)) {
     return [];
   }
-  
-  return fs.readdirSync(packagesDir)
-    .filter(dir => {
-      const packagePath = path.join(packagesDir, dir);
-      return fs.statSync(packagePath).isDirectory() && 
-             fs.existsSync(path.join(packagePath, 'package.json'));
-    });
+
+  return fs.readdirSync(packagesDir).filter(dir => {
+    const packagePath = path.join(packagesDir, dir);
+    return (
+      fs.statSync(packagePath).isDirectory() &&
+      fs.existsSync(path.join(packagePath, 'package.json'))
+    );
+  });
 }
 
 function runTestsForPackage(packageName, testType = 'all') {
   logSection(`Testing package: ${packageName}`);
-  
+
   const commands = {
     unit: `npm run test --workspace=packages/${packageName}`,
     pbt: `npm run test:pbt --workspace=packages/${packageName}`,
     coverage: `npm run test:coverage --workspace=packages/${packageName}`,
     watch: `npm run test:watch --workspace=packages/${packageName}`,
   };
-  
+
   if (testType === 'all') {
     // Run unit tests first
     const unitResult = executeCommand(commands.unit);
-    
+
     // Only run PBT if unit tests pass
     if (unitResult.success) {
       log('Running property-based tests...', 'blue');
       const pbtResult = executeCommand(commands.pbt);
-      
+
       // If PBT fails due to no test files, treat as success
-      if (!pbtResult.success && pbtResult.error && pbtResult.error.message.includes('No test files found')) {
-        log(`No PBT test files found for ${packageName}, skipping...`, 'yellow');
+      if (
+        !pbtResult.success &&
+        pbtResult.error &&
+        pbtResult.error.message.includes('No test files found')
+      ) {
+        log(
+          `No PBT test files found for ${packageName}, skipping...`,
+          'yellow'
+        );
         return true; // Treat as success
       }
-      
+
       return pbtResult.success;
     }
     return unitResult.success;
   } else if (commands[testType]) {
     const result = executeCommand(commands[testType]);
-    
+
     // Handle "no test files found" for PBT specifically
-    if (!result.success && testType === 'pbt' && result.error && result.error.message.includes('No test files found')) {
+    if (
+      !result.success &&
+      testType === 'pbt' &&
+      result.error &&
+      result.error.message.includes('No test files found')
+    ) {
       log(`No PBT test files found for ${packageName}, skipping...`, 'yellow');
       return true;
     }
-    
+
     return result.success;
   } else {
     log(`Unknown test type: ${testType}`, 'red');
@@ -114,24 +127,24 @@ function runTestsForPackage(packageName, testType = 'all') {
 
 function runAllTests(testType = 'all') {
   logHeader(`Running ${testType} tests for all packages`);
-  
+
   const packages = getPackages();
   if (packages.length === 0) {
     log('No packages found', 'yellow');
     return false;
   }
-  
+
   log(`Found packages: ${packages.join(', ')}`, 'green');
-  
+
   let allPassed = true;
   const results = {};
-  
+
   for (const packageName of packages) {
     const success = runTestsForPackage(packageName, testType);
     results[packageName] = success;
     allPassed = allPassed && success;
   }
-  
+
   // Summary
   logHeader('Test Results Summary');
   for (const [packageName, success] of Object.entries(results)) {
@@ -139,48 +152,48 @@ function runAllTests(testType = 'all') {
     const color = success ? 'green' : 'red';
     log(`${packageName}: ${status}`, color);
   }
-  
+
   const overallStatus = allPassed ? 'ALL TESTS PASSED' : 'SOME TESTS FAILED';
   const overallColor = allPassed ? 'green' : 'red';
   log(`\n${overallStatus}`, overallColor);
-  
+
   return allPassed;
 }
 
 function runCoverageReport() {
   logHeader('Generating Coverage Report');
-  
+
   // Run coverage for all packages
   const packages = getPackages();
   let allPassed = true;
-  
+
   for (const packageName of packages) {
     const success = runTestsForPackage(packageName, 'coverage');
     allPassed = allPassed && success;
   }
-  
+
   // Generate combined coverage report using Jest
   if (allPassed) {
     log('\nGenerating combined coverage report...', 'blue');
     executeCommand('npx jest --coverage --passWithNoTests');
   }
-  
+
   return allPassed;
 }
 
 function runPropertyBasedTests() {
   logHeader('Running Property-Based Tests');
-  
+
   const packages = getPackages();
   let allPassed = true;
-  
+
   for (const packageName of packages) {
     logSection(`Property-based tests for ${packageName}`);
     const command = `npm run test:pbt --workspace=packages/${packageName}`;
     const result = executeCommand(command);
     allPassed = allPassed && result.success;
   }
-  
+
   return allPassed;
 }
 
@@ -204,7 +217,7 @@ function showHelp() {
 function main() {
   const args = process.argv.slice(2);
   const command = args[0] || 'all';
-  
+
   switch (command) {
     case 'all':
       process.exit(runAllTests('all') ? 0 : 1);

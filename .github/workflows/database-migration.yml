@@ -55,10 +55,10 @@ jobs:
           if [ "${{ github.event.inputs.environment }}" = "development" ]; then
             DB_NAME="${DB_NAME}-dev"
           fi
-          
+
           # Apply schema if this is initial setup
           npx wrangler d1 execute "$DB_NAME" --file="database/schema.sql"
-          
+
           # Apply all migration files in order
           for migration in database/migrations/*.sql; do
             if [ -f "$migration" ]; then

@@ -19,12 +19,13 @@ declare global {
 // UUID validation matcher
 expect.extend({
   toBeValidUUID(received: string) {
-    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+    const uuidRegex =
+      /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
     const pass = typeof received === 'string' && uuidRegex.test(received);
-    
+
     return {
-      message: () => 
-        pass 
+      message: () =>
+        pass
           ? `Expected ${received} not to be a valid UUID`
           : `Expected ${received} to be a valid UUID`,
       pass,
@@ -37,10 +38,10 @@ expect.extend({
   toBeValidEmail(received: string) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const pass = typeof received === 'string' && emailRegex.test(received);
-    
+
     return {
-      message: () => 
-        pass 
+      message: () =>
+        pass
           ? `Expected ${received} not to be a valid email`
           : `Expected ${received} to be a valid email`,
       pass,
@@ -52,10 +53,10 @@ expect.extend({
 expect.extend({
   toBeValidDate(received: any) {
     const pass = received instanceof Date && !isNaN(received.getTime());
-    
+
     return {
-      message: () => 
-        pass 
+      message: () =>
+        pass
           ? `Expected ${received} not to be a valid Date`
           : `Expected ${received} to be a valid Date`,
       pass,
@@ -66,13 +67,14 @@ expect.extend({
 // Time range validation matcher
 expect.extend({
   toBeWithinTimeRange(received: Date, start: Date, end: Date) {
-    const pass = received instanceof Date && 
-                 received.getTime() >= start.getTime() && 
-                 received.getTime() <= end.getTime();
-    
+    const pass =
+      received instanceof Date &&
+      received.getTime() >= start.getTime() &&
+      received.getTime() <= end.getTime();
+
     return {
-      message: () => 
-        pass 
+      message: () =>
+        pass
           ? `Expected ${received} not to be within range ${start} - ${end}`
           : `Expected ${received} to be within range ${start} - ${end}`,
       pass,
@@ -83,7 +85,8 @@ expect.extend({
 // Test configuration validation matcher
 expect.extend({
   toHaveValidTestConfiguration(received: any) {
-    const isValid = received &&
+    const isValid =
+      received &&
       Array.isArray(received.subjects) &&
       received.subjects.length > 0 &&
       typeof received.questionsPerSubject === 'number' &&
@@ -92,10 +95,10 @@ expect.extend({
       received.timeLimit > 0 &&
       ['mixed', 'easy', 'medium', 'hard'].includes(received.difficulty) &&
       typeof received.randomizeQuestions === 'boolean';
-    
+
     return {
-      message: () => 
-        isValid 
+      message: () =>
+        isValid
           ? `Expected test configuration to be invalid`
           : `Expected valid test configuration, got: ${JSON.stringify(received)}`,
       pass: isValid,
@@ -106,7 +109,8 @@ expect.extend({
 // Question format validation matcher
 expect.extend({
   toHaveValidQuestionFormat(received: any) {
-    const isValid = received &&
+    const isValid =
+      received &&
       typeof received.id === 'string' &&
       ['physics', 'chemistry', 'mathematics'].includes(received.subject) &&
       ['easy', 'medium', 'hard'].includes(received.difficulty) &&
@@ -118,10 +122,10 @@ expect.extend({
       typeof received.sourcePattern === 'string' &&
       received.metadata &&
       typeof received.metadata.topic === 'string';
-    
+
     return {
-      message: () => 
-        isValid 
+      message: () =>
+        isValid
           ? `Expected question format to be invalid`
           : `Expected valid question format, got: ${JSON.stringify(received)}`,
       pass: isValid,
@@ -132,7 +136,8 @@ expect.extend({
 // Performance metrics validation matcher
 expect.extend({
   toHaveValidPerformanceMetrics(received: any) {
-    const isValid = received &&
+    const isValid =
+      received &&
       typeof received.totalQuestions === 'number' &&
       received.totalQuestions > 0 &&
       typeof received.correctAnswers === 'number' &&
@@ -145,10 +150,10 @@ expect.extend({
       received.averageTimePerQuestion > 0 &&
       Array.isArray(received.strengths) &&
       Array.isArray(received.weaknesses);
-    
+
     return {
-      message: () => 
-        isValid 
+      message: () =>
+        isValid
           ? `Expected performance metrics to be invalid`
           : `Expected valid performance metrics, got: ${JSON.stringify(received)}`,
       pass: isValid,

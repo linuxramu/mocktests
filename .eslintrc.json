@@ -86,11 +86,5 @@
       }
     }
   ],
-  "ignorePatterns": [
-    "dist/",
-    "build/",
-    "node_modules/",
-    "coverage/",
-    "*.d.ts"
-  ]
+  "ignorePatterns": ["dist/", "build/", "node_modules/", "coverage/", "*.d.ts"]
 }

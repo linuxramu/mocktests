@@ -4,7 +4,7 @@ module.exports = {
   roots: ['<rootDir>/packages'],
   testMatch: [
     '**/src/**/__tests__/**/*.{js,jsx,ts,tsx}',
-    '**/src/**/*.(test|spec).{js,jsx,ts,tsx}'
+    '**/src/**/*.(test|spec).{js,jsx,ts,tsx}',
   ],
   transform: {
     '^.+\\.(ts|tsx)$': 'ts-jest',
@@ -39,13 +39,17 @@ module.exports = {
     },
     {
       displayName: 'auth-worker',
-      testMatch: ['<rootDir>/packages/auth-worker/src/**/*.{test,spec}.{js,ts}'],
+      testMatch: [
+        '<rootDir>/packages/auth-worker/src/**/*.{test,spec}.{js,ts}',
+      ],
       preset: 'ts-jest',
       testEnvironment: 'node',
     },
     {
       displayName: 'test-engine-worker',
-      testMatch: ['<rootDir>/packages/test-engine-worker/src/**/*.{test,spec}.{js,ts}'],
+      testMatch: [
+        '<rootDir>/packages/test-engine-worker/src/**/*.{test,spec}.{js,ts}',
+      ],
       preset: 'ts-jest',
       testEnvironment: 'node',
     },
@@ -57,13 +61,17 @@ module.exports = {
     },
     {
       displayName: 'analytics-worker',
-      testMatch: ['<rootDir>/packages/analytics-worker/src/**/*.{test,spec}.{js,ts}'],
+      testMatch: [
+        '<rootDir>/packages/analytics-worker/src/**/*.{test,spec}.{js,ts}',
+      ],
       preset: 'ts-jest',
       testEnvironment: 'node',
     },
     {
       displayName: 'frontend',
-      testMatch: ['<rootDir>/packages/frontend/src/**/*.{test,spec}.{js,jsx,ts,tsx}'],
+      testMatch: [
+        '<rootDir>/packages/frontend/src/**/*.{test,spec}.{js,jsx,ts,tsx}',
+      ],
       preset: 'ts-jest',
       testEnvironment: 'jsdom',
       setupFilesAfterEnv: ['<rootDir>/packages/frontend/src/test/setup.ts'],

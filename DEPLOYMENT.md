@@ -49,7 +49,7 @@ Set up the following secrets for each worker:
 wrangler secret put JWT_SECRET --env production
 wrangler secret put JWT_SECRET --env development
 
-# AI Worker secrets  
+# AI Worker secrets
 wrangler secret put AI_API_KEY --env production
 wrangler secret put AI_API_KEY --env development
 ```
@@ -68,6 +68,7 @@ Add these secrets to your GitHub repository settings:
 ### Permissions Required
 
 Your Cloudflare API token needs these permissions:
+
 - Zone:Zone Settings:Edit
 - Zone:Zone:Read
 - Account:Cloudflare Workers:Edit
@@ -77,12 +78,14 @@ Your Cloudflare API token needs these permissions:
 ## Deployment Environments
 
 ### Development Environment
+
 - **Branch**: `develop`
 - **Workers**: `*-dev` suffix
 - **Database**: `eamcet-platform-db-dev`
 - **Pages**: `eamcet-platform-dev`
 
 ### Production Environment
+
 - **Branch**: `main`
 - **Workers**: `*-prod` suffix
 - **Database**: `eamcet-platform-db`
@@ -128,6 +131,7 @@ wrangler d1 execute eamcet-platform-db --file=database/schema.sql
 ### Health Checks
 
 Each worker includes health check endpoints:
+
 - `GET /health` - Basic health status
 - `GET /health/detailed` - Detailed system status
 
@@ -223,6 +227,7 @@ Monitor usage through the Cloudflare dashboard and implement appropriate caching
 ## Support
 
 For deployment issues:
+
 1. Check the GitHub Actions logs
 2. Review Cloudflare Workers logs
 3. Verify all configuration files

@@ -105,7 +105,10 @@ Property-based tests verify universal properties across all inputs:
 ```typescript
 import { describe, it } from 'vitest';
 import * as fc from 'fast-check';
-import { runPropertyTest, arbitraryEmail } from './test-utils/property-generators';
+import {
+  runPropertyTest,
+  arbitraryEmail,
+} from './test-utils/property-generators';
 import { validateEmail } from './utils';
 
 describe('validateEmail - Property-Based Tests', () => {
@@ -113,7 +116,7 @@ describe('validateEmail - Property-Based Tests', () => {
     runPropertyTest(
       'validateEmail accepts valid emails',
       arbitraryEmail(),
-      (email) => {
+      email => {
         expect(validateEmail(email)).toBe(true);
         expect(email).toBeValidEmail();
       }
@@ -210,7 +213,7 @@ it('should maintain data integrity through serialization', () => {
   runPropertyTest(
     'serialize/deserialize preserves data',
     arbitraryUser(),
-    (user) => {
+    user => {
       const serialized = JSON.stringify(user);
       const deserialized = JSON.parse(serialized);
       expect(deserialized).toEqual(user);
@@ -269,11 +272,11 @@ const { session, questions, answers } = mockCompleteTestSession();
 // Override specific properties
 const adminUser = mockUser({
   email: 'admin@test.com',
-  profileData: { targetScore: 200 }
+  profileData: { targetScore: 200 },
 });
 
 // Generate with constraints
-const hardQuestions = mockQuestions(20).map(q => 
+const hardQuestions = mockQuestions(20).map(q =>
   mockQuestion({ ...q, difficulty: 'hard' })
 );
 ```
@@ -301,10 +304,10 @@ it('should scale linearly with input size', () => {
   runPropertyTest(
     'processing time scales linearly',
     fc.integer({ min: 10, max: 1000 }),
-    async (size) => {
+    async size => {
       const data = generateTestData(size);
       const { timeMs } = await measureExecutionTime(() => process(data));
-      
+
       // Should be roughly linear (allowing for some variance)
       expect(timeMs).toBeLessThan(size * 2); // 2ms per item max
     },
@@ -361,7 +364,7 @@ Tests run automatically on:
   run: |
     npm ci
     npm run test:coverage
-    
+
 - name: Upload Coverage
   uses: codecov/codecov-action@v3
   with:

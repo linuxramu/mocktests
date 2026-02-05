@@ -1,13 +1,13 @@
 import * as fc from 'fast-check';
-import type { 
-  User, 
-  UserProfileData, 
-  TestSession, 
-  TestConfiguration, 
-  Question, 
-  QuestionMetadata, 
-  UserAnswer, 
-  PerformanceAnalytics 
+import type {
+  User,
+  UserProfileData,
+  TestSession,
+  TestConfiguration,
+  Question,
+  QuestionMetadata,
+  UserAnswer,
+  PerformanceAnalytics,
 } from '../types';
 
 /**
@@ -27,53 +27,77 @@ export const PBT_CONFIG = {
 
 // Basic generators
 export const arbitraryEmail = (): fc.Arbitrary<string> =>
-  fc.tuple(
-    fc.stringOf(fc.char().filter(c => /[a-zA-Z0-9]/.test(c)), { minLength: 1, maxLength: 20 }),
-    fc.constantFrom('gmail.com', 'yahoo.com', 'example.com', 'test.org')
-  ).map(([local, domain]) => `${local}@${domain}`);
+  fc
+    .tuple(
+      fc.stringOf(
+        fc.char().filter(c => /[a-zA-Z0-9]/.test(c)),
+        { minLength: 1, maxLength: 20 }
+      ),
+      fc.constantFrom('gmail.com', 'yahoo.com', 'example.com', 'test.org')
+    )
+    .map(([local, domain]) => `${local}@${domain}`);
 
 export const arbitraryUUID = (): fc.Arbitrary<string> =>
-  fc.tuple(
-    fc.hexaString({ minLength: 8, maxLength: 8 }),
-    fc.hexaString({ minLength: 4, maxLength: 4 }),
-    fc.hexaString({ minLength: 4, maxLength: 4 }),
-    fc.hexaString({ minLength: 4, maxLength: 4 }),
-    fc.hexaString({ minLength: 12, maxLength: 12 })
-  ).map(([a, b, c, d, e]) => `${a}-${b}-${c}-${d}-${e}`);
+  fc
+    .tuple(
+      fc.hexaString({ minLength: 8, maxLength: 8 }),
+      fc.hexaString({ minLength: 4, maxLength: 4 }),
+      fc.hexaString({ minLength: 4, maxLength: 4 }),
+      fc.hexaString({ minLength: 4, maxLength: 4 }),
+      fc.hexaString({ minLength: 12, maxLength: 12 })
+    )
+    .map(([a, b, c, d, e]) => `${a}-${b}-${c}-${d}-${e}`);
 
 export const arbitraryDate = (): fc.Arbitrary<Date> =>
   fc.integer({ min: 0, max: Date.now() }).map(timestamp => new Date(timestamp));
 
 export const arbitraryFutureDate = (): fc.Arbitrary<Date> =>
-  fc.integer({ min: Date.now(), max: Date.now() + 365 * 24 * 60 * 60 * 1000 })
+  fc
+    .integer({ min: Date.now(), max: Date.now() + 365 * 24 * 60 * 60 * 1000 })
     .map(timestamp => new Date(timestamp));
 
 export const arbitraryPastDate = (): fc.Arbitrary<Date> =>
-  fc.integer({ min: Date.now() - 365 * 24 * 60 * 60 * 1000, max: Date.now() })
+  fc
+    .integer({ min: Date.now() - 365 * 24 * 60 * 60 * 1000, max: Date.now() })
     .map(timestamp => new Date(timestamp));
 
 // Domain-specific generators
-export const arbitrarySubject = (): fc.Arbitrary<'physics' | 'chemistry' | 'mathematics'> =>
-  fc.constantFrom('physics', 'chemistry', 'mathematics');
+export const arbitrarySubject = (): fc.Arbitrary<
+  'physics' | 'chemistry' | 'mathematics'
+> => fc.constantFrom('physics', 'chemistry', 'mathematics');
 
-export const arbitraryDifficulty = (): fc.Arbitrary<'easy' | 'medium' | 'hard'> =>
-  fc.constantFrom('easy', 'medium', 'hard');
+export const arbitraryDifficulty = (): fc.Arbitrary<
+  'easy' | 'medium' | 'hard'
+> => fc.constantFrom('easy', 'medium', 'hard');
 
-export const arbitraryTestType = (): fc.Arbitrary<'full' | 'subject-wise' | 'custom'> =>
-  fc.constantFrom('full', 'subject-wise', 'custom');
+export const arbitraryTestType = (): fc.Arbitrary<
+  'full' | 'subject-wise' | 'custom'
+> => fc.constantFrom('full', 'subject-wise', 'custom');
 
-export const arbitraryTestStatus = (): fc.Arbitrary<'active' | 'completed' | 'abandoned'> =>
-  fc.constantFrom('active', 'completed', 'abandoned');
+export const arbitraryTestStatus = (): fc.Arbitrary<
+  'active' | 'completed' | 'abandoned'
+> => fc.constantFrom('active', 'completed', 'abandoned');
 
 export const arbitraryUserProfileData = (): fc.Arbitrary<UserProfileData> =>
   fc.record({
     targetScore: fc.option(fc.integer({ min: 50, max: 200 })),
-    preferredSubjects: fc.option(fc.array(arbitrarySubject(), { minLength: 1, maxLength: 3 })),
-    studyGoals: fc.option(fc.array(
-      fc.constantFrom('improve_accuracy', 'time_management', 'concept_clarity', 'speed_building'),
-      { minLength: 1, maxLength: 4 }
-    )),
-    timeZone: fc.option(fc.constantFrom('Asia/Kolkata', 'UTC', 'America/New_York')),
+    preferredSubjects: fc.option(
+      fc.array(arbitrarySubject(), { minLength: 1, maxLength: 3 })
+    ),
+    studyGoals: fc.option(
+      fc.array(
+        fc.constantFrom(
+          'improve_accuracy',
+          'time_management',
+          'concept_clarity',
+          'speed_building'
+        ),
+        { minLength: 1, maxLength: 4 }
+      )
+    ),
+    timeZone: fc.option(
+      fc.constantFrom('Asia/Kolkata', 'UTC', 'America/New_York')
+    ),
   });
 
 export const arbitraryUser = (): fc.Arbitrary<User> =>
@@ -92,10 +116,7 @@ export const arbitraryTestConfiguration = (): fc.Arbitrary<TestConfiguration> =>
     subjects: fc.array(arbitrarySubject(), { minLength: 1, maxLength: 3 }),
     questionsPerSubject: fc.integer({ min: 10, max: 50 }),
     timeLimit: fc.integer({ min: 30, max: 300 }), // 30 minutes to 5 hours
-    difficulty: fc.oneof(
-      fc.constant('mixed' as const),
-      arbitraryDifficulty()
-    ),
+    difficulty: fc.oneof(fc.constant('mixed' as const), arbitraryDifficulty()),
     randomizeQuestions: fc.boolean(),
   });
 
@@ -105,7 +126,10 @@ export const arbitraryQuestionMetadata = (): fc.Arbitrary<QuestionMetadata> =>
     subtopic: fc.option(fc.string({ minLength: 3, maxLength: 30 })),
     yearSource: fc.option(fc.integer({ min: 2010, max: 2024 })),
     estimatedTime: fc.integer({ min: 30, max: 300 }), // 30 seconds to 5 minutes
-    conceptTags: fc.array(fc.string({ minLength: 3, maxLength: 20 }), { minLength: 1, maxLength: 5 }),
+    conceptTags: fc.array(fc.string({ minLength: 3, maxLength: 20 }), {
+      minLength: 1,
+      maxLength: 5,
+    }),
   });
 
 export const arbitraryQuestion = (): fc.Arbitrary<Question> =>
@@ -114,7 +138,10 @@ export const arbitraryQuestion = (): fc.Arbitrary<Question> =>
     subject: arbitrarySubject(),
     difficulty: arbitraryDifficulty(),
     questionText: fc.string({ minLength: 10, maxLength: 500 }),
-    options: fc.array(fc.string({ minLength: 1, maxLength: 100 }), { minLength: 4, maxLength: 4 }),
+    options: fc.array(fc.string({ minLength: 1, maxLength: 100 }), {
+      minLength: 4,
+      maxLength: 4,
+    }),
     correctAnswer: fc.constantFrom('A', 'B', 'C', 'D'),
     explanation: fc.option(fc.string({ minLength: 10, maxLength: 300 })),
     sourcePattern: fc.string({ minLength: 5, maxLength: 50 }),
@@ -146,29 +173,38 @@ export const arbitraryUserAnswer = (): fc.Arbitrary<UserAnswer> =>
     isMarkedForReview: fc.boolean(),
   });
 
-export const arbitraryPerformanceAnalytics = (): fc.Arbitrary<PerformanceAnalytics> => {
-  return fc.tuple(
-    fc.integer({ min: 10, max: 100 }), // totalQuestions
-    fc.float({ min: 0, max: 1 }) // accuracy ratio
-  ).chain(([totalQuestions, accuracyRatio]) => {
-    const correctAnswers = Math.floor(totalQuestions * accuracyRatio);
-    const accuracyPercentage = (correctAnswers / totalQuestions) * 100;
-    
-    return fc.record({
-      id: arbitraryUUID(),
-      userId: arbitraryUUID(),
-      testSessionId: arbitraryUUID(),
-      subject: arbitrarySubject(),
-      totalQuestions: fc.constant(totalQuestions),
-      correctAnswers: fc.constant(correctAnswers),
-      accuracyPercentage: fc.constant(accuracyPercentage),
-      averageTimePerQuestion: fc.float({ min: 30, max: 300 }),
-      strengths: fc.array(fc.string({ minLength: 5, maxLength: 30 }), { minLength: 0, maxLength: 5 }),
-      weaknesses: fc.array(fc.string({ minLength: 5, maxLength: 30 }), { minLength: 0, maxLength: 5 }),
-      calculatedAt: arbitraryDate(),
-    });
-  });
-};
+export const arbitraryPerformanceAnalytics =
+  (): fc.Arbitrary<PerformanceAnalytics> => {
+    return fc
+      .tuple(
+        fc.integer({ min: 10, max: 100 }), // totalQuestions
+        fc.float({ min: 0, max: 1 }) // accuracy ratio
+      )
+      .chain(([totalQuestions, accuracyRatio]) => {
+        const correctAnswers = Math.floor(totalQuestions * accuracyRatio);
+        const accuracyPercentage = (correctAnswers / totalQuestions) * 100;
+
+        return fc.record({
+          id: arbitraryUUID(),
+          userId: arbitraryUUID(),
+          testSessionId: arbitraryUUID(),
+          subject: arbitrarySubject(),
+          totalQuestions: fc.constant(totalQuestions),
+          correctAnswers: fc.constant(correctAnswers),
+          accuracyPercentage: fc.constant(accuracyPercentage),
+          averageTimePerQuestion: fc.float({ min: 30, max: 300 }),
+          strengths: fc.array(fc.string({ minLength: 5, maxLength: 30 }), {
+            minLength: 0,
+            maxLength: 5,
+          }),
+          weaknesses: fc.array(fc.string({ minLength: 5, maxLength: 30 }), {
+            minLength: 0,
+            maxLength: 5,
+          }),
+          calculatedAt: arbitraryDate(),
+        });
+      });
+  };
 
 // Composite generators for related data
 export const arbitraryCompleteTestSession = (): fc.Arbitrary<{
@@ -176,22 +212,24 @@ export const arbitraryCompleteTestSession = (): fc.Arbitrary<{
   questions: Question[];
   answers: UserAnswer[];
 }> =>
-  fc.tuple(
-    arbitraryTestSession(),
-    fc.integer({ min: 10, max: 50 })
-  ).chain(([session, questionCount]) =>
-    fc.record({
-      session: fc.constant({ ...session, totalQuestions: questionCount }),
-      questions: fc.array(arbitraryQuestion(), { minLength: questionCount, maxLength: questionCount }),
-      answers: fc.array(
-        arbitraryUserAnswer().map(answer => ({ 
-          ...answer, 
-          testSessionId: session.id 
-        })),
-        { minLength: questionCount, maxLength: questionCount }
-      ),
-    })
-  );
+  fc
+    .tuple(arbitraryTestSession(), fc.integer({ min: 10, max: 50 }))
+    .chain(([session, questionCount]) =>
+      fc.record({
+        session: fc.constant({ ...session, totalQuestions: questionCount }),
+        questions: fc.array(arbitraryQuestion(), {
+          minLength: questionCount,
+          maxLength: questionCount,
+        }),
+        answers: fc.array(
+          arbitraryUserAnswer().map(answer => ({
+            ...answer,
+            testSessionId: session.id,
+          })),
+          { minLength: questionCount, maxLength: questionCount }
+        ),
+      })
+    );
 
 // Validation generators (for testing edge cases)
 export const arbitraryInvalidEmail = (): fc.Arbitrary<string> =>

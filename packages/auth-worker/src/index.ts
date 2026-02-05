@@ -8,9 +8,9 @@ export default {
     ctx: ExecutionContext
   ): Promise<Response> {
     return new Response('Authentication Worker - Basic deployment successful', {
-      headers: { 
+      headers: {
         'Content-Type': 'text/plain',
-        'Access-Control-Allow-Origin': '*'
+        'Access-Control-Allow-Origin': '*',
       },
     });
   },

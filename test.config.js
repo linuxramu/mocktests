@@ -10,7 +10,7 @@ module.exports = {
     minIterations: 100,
     timeout: 30000, // 30 seconds
     verbose: true,
-    
+
     // Test categories and their specific configurations
     categories: {
       unit: {
@@ -93,14 +93,14 @@ module.exports = {
   mockData: {
     // Seed for reproducible random data in tests
     seed: 12345,
-    
+
     // Default sizes for generated arrays
     defaultArraySizes: {
       small: { min: 1, max: 5 },
       medium: { min: 5, max: 20 },
       large: { min: 20, max: 100 },
     },
-    
+
     // Test user configurations
     testUsers: {
       count: 10,
@@ -132,13 +132,13 @@ module.exports = {
   utilities: {
     // Timeout for async operations
     asyncTimeout: 10000,
-    
+
     // Retry configuration for flaky tests
     retry: {
       attempts: 3,
       delay: 1000,
     },
-    
+
     // Performance benchmarks
     performance: {
       maxExecutionTime: {
