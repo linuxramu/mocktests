@@ -7,14 +7,33 @@ export default {
     env: Env,
     ctx: ExecutionContext
   ): Promise<Response> {
-    return new Response('AI Worker - Placeholder', {
+    // Check if database and API key are available
+    if (!env.DB) {
+      return new Response('AI Worker - Database not configured yet', {
+        status: 503,
+        headers: { 'Content-Type': 'text/plain' },
+      });
+    }
+
+    if (!env.AI_API_KEY) {
+      return new Response('AI Worker - API key not configured yet', {
+        status: 503,
+        headers: { 'Content-Type': 'text/plain' },
+      });
+    }
+
+    return new Response('AI Worker - Ready', {
       headers: { 'Content-Type': 'text/plain' },
     });
   },
 };
 
 export interface Env {
-  // Environment variables will be defined here
-  // AI_API_KEY will be added as a secret later
-  // DB bindings will be added later when databases are configured
+  // Environment variables
+  DB?: D1Database; // Optional - will be undefined if not configured
+  AI_API_KEY?: string; // Optional - will be undefined if not configured
+  ENVIRONMENT?: string;
+  QUESTION_GENERATION_TIMEOUT?: string;
+  MAX_QUESTIONS_PER_BATCH?: string;
+  CORS_ORIGINS?: string;
 }

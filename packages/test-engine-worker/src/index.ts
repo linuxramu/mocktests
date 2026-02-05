@@ -7,13 +7,27 @@ export default {
     env: Env,
     ctx: ExecutionContext
   ): Promise<Response> {
-    return new Response('Test Engine Worker - Placeholder', {
+    // Check if database is available
+    if (!env.DB) {
+      return new Response('Test Engine Worker - Database not configured yet', {
+        status: 503,
+        headers: { 'Content-Type': 'text/plain' },
+      });
+    }
+
+    return new Response('Test Engine Worker - Ready', {
       headers: { 'Content-Type': 'text/plain' },
     });
   },
 };
 
 export interface Env {
-  // Environment variables will be defined here
-  // DB and KV bindings will be added later when databases are configured
+  // Environment variables
+  DB?: D1Database; // Optional - will be undefined if not configured
+  KV?: KVNamespace; // Optional - will be undefined if not configured
+  ENVIRONMENT?: string;
+  TEST_DURATION_LIMIT?: string;
+  MAX_QUESTIONS_PER_TEST?: string;
+  WEBSOCKET_TIMEOUT?: string;
+  CORS_ORIGINS?: string;
 }
