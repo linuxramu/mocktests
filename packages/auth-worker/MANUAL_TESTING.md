@@ -18,6 +18,7 @@ The worker will start at `http://localhost:8787`
 1. **Start the worker** (see above)
 
 2. **Open the test UI** in your browser:
+
    ```bash
    open test-ui.html
    # or just double-click the file
