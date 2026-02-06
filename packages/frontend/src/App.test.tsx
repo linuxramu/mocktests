@@ -8,8 +8,10 @@ describe('App Component', () => {
     expect(screen.getByText('EAMCET Mock Test Platform')).toBeDefined();
   });
 
-  it('should render the placeholder text', () => {
+  it('should render the home page content', () => {
     render(<App />);
-    expect(screen.getByText('Frontend application placeholder')).toBeDefined();
+    expect(
+      screen.getByText('Prepare for EAMCET with AI-Powered Mock Tests')
+    ).toBeDefined();
   });
 });

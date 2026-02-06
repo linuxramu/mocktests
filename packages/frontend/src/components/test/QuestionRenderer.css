@@ -1,0 +1,153 @@
+.question-renderer {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.question-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #eee;
+}
+
+.question-info {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.question-number {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.subject-badge,
+.difficulty-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.subject-badge.physics {
+  background: #e3f2fd;
+  color: #1976d2;
+}
+
+.subject-badge.chemistry {
+  background: #f3e5f5;
+  color: #7b1fa2;
+}
+
+.subject-badge.mathematics {
+  background: #e8f5e9;
+  color: #388e3c;
+}
+
+.difficulty-badge.easy {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.difficulty-badge.medium {
+  background: #fff3e0;
+  color: #f57c00;
+}
+
+.difficulty-badge.hard {
+  background: #ffebee;
+  color: #c62828;
+}
+
+.review-btn {
+  padding: 0.5rem 1rem;
+  border: 2px solid #ffc107;
+  background: white;
+  color: #f57c00;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.review-btn.marked {
+  background: #ffc107;
+  color: white;
+}
+
+.review-btn:hover {
+  background: #ffc107;
+  color: white;
+}
+
+.question-text {
+  margin-bottom: 2rem;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #333;
+}
+
+.options-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.option:hover {
+  border-color: #007bff;
+  background: #f8f9fa;
+}
+
+.option.selected {
+  border-color: #007bff;
+  background: #e7f3ff;
+}
+
+.option-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #f0f0f0;
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: #555;
+  flex-shrink: 0;
+}
+
+.option.selected .option-label {
+  background: #007bff;
+  color: white;
+}
+
+.option-text {
+  flex: 1;
+  font-size: 1rem;
+  color: #333;
+}
+
+.question-metadata {
+  padding-top: 1rem;
+  border-top: 1px solid #eee;
+  font-size: 0.9rem;
+  color: #666;
+}

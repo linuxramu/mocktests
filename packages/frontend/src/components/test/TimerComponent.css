@@ -1,0 +1,111 @@
+.timer-component {
+  background: white;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s;
+}
+
+.timer-component.normal {
+  border-left: 4px solid #28a745;
+}
+
+.timer-component.warning {
+  border-left: 4px solid #ffc107;
+  animation: pulse-warning 2s infinite;
+}
+
+.timer-component.critical {
+  border-left: 4px solid #dc3545;
+  animation: pulse-critical 1s infinite;
+}
+
+@keyframes pulse-warning {
+  0%,
+  100% {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  50% {
+    box-shadow: 0 2px 12px rgba(255, 193, 7, 0.4);
+  }
+}
+
+@keyframes pulse-critical {
+  0%,
+  100% {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  50% {
+    box-shadow: 0 2px 16px rgba(220, 53, 69, 0.5);
+  }
+}
+
+.timer-display {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.timer-icon {
+  font-size: 1.5rem;
+}
+
+.timer-text {
+  font-size: 1.8rem;
+  font-weight: 700;
+  font-family: 'Courier New', monospace;
+  color: #333;
+}
+
+.timer-component.warning .timer-text {
+  color: #f57c00;
+}
+
+.timer-component.critical .timer-text {
+  color: #dc3545;
+}
+
+.timer-progress-bar {
+  width: 100%;
+  height: 8px;
+  background: #e9ecef;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.timer-progress-fill {
+  height: 100%;
+  background: #28a745;
+  transition:
+    width 1s linear,
+    background 0.3s;
+}
+
+.timer-component.warning .timer-progress-fill {
+  background: #ffc107;
+}
+
+.timer-component.critical .timer-progress-fill {
+  background: #dc3545;
+}
+
+.timer-warning,
+.timer-critical {
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  text-align: center;
+}
+
+.timer-warning {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.timer-critical {
+  background: #f8d7da;
+  color: #721c24;
+}

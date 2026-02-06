@@ -292,13 +292,60 @@ export async function router(request: Request, env: Env): Promise<Response> {
   }
 
   // Health check
-  if (path === '/ai/health' && method === 'GET') {
+  if (path === '/health' && method === 'GET') {
     const origin = request.headers.get('Origin');
     const corsOrigins = env.CORS_ORIGINS || '*';
     const corsHeaders = getCorsHeaders(origin, corsOrigins);
     return successResponse(
-      { status: 'healthy', service: 'ai-worker' },
+      {
+        status: 'healthy',
+        service: 'ai-worker',
+        timestamp: new Date().toISOString(),
+        environment: env.ENVIRONMENT || 'unknown',
+      },
       corsHeaders
+    );
+  }
+
+  // Detailed health check
+  if (path === '/health/detailed' && method === 'GET') {
+    const origin = request.headers.get('Origin');
+    const corsOrigins = env.CORS_ORIGINS || '*';
+    const corsHeaders = getCorsHeaders(origin, corsOrigins);
+
+    const checks: Record<string, any> = {
+      service: 'healthy',
+      database: 'unknown',
+    };
+
+    // Check database connectivity
+    try {
+      await env.DB.prepare('SELECT 1').first();
+      checks.database = 'healthy';
+    } catch (error) {
+      checks.database = 'unhealthy';
+      checks.databaseError =
+        error instanceof Error ? error.message : 'Unknown error';
+    }
+
+    const isHealthy = checks.database === 'healthy';
+
+    const headers = new Headers(corsHeaders);
+    headers.set('Content-Type', 'application/json');
+
+    return new Response(
+      JSON.stringify({
+        status: isHealthy ? 'healthy' : 'degraded',
+        service: 'ai-worker',
+        timestamp: new Date().toISOString(),
+        environment: env.ENVIRONMENT || 'unknown',
+        checks,
+        uptime: Date.now(),
+      }),
+      {
+        status: isHealthy ? 200 : 503,
+        headers,
+      }
     );
   }
 

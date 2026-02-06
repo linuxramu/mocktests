@@ -472,9 +472,67 @@ async function handleGetHistory(request: Request, env: Env): Promise<Response> {
   return jsonResponse(sessions);
 }
 
+// Health check handlers
+async function handleHealth(request: Request, env: Env): Promise<Response> {
+  return new Response(
+    JSON.stringify({
+      status: 'healthy',
+      service: 'test-engine-worker',
+      timestamp: new Date().toISOString(),
+      environment: env.ENVIRONMENT || 'unknown',
+    }),
+    {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' },
+    }
+  );
+}
+
+async function handleDetailedHealth(
+  request: Request,
+  env: Env
+): Promise<Response> {
+  const checks: Record<string, any> = {
+    service: 'healthy',
+    database: 'unknown',
+  };
+
+  // Check database connectivity
+  try {
+    await env.DB.prepare('SELECT 1').first();
+    checks.database = 'healthy';
+  } catch (error) {
+    checks.database = 'unhealthy';
+    checks.databaseError =
+      error instanceof Error ? error.message : 'Unknown error';
+  }
+
+  const isHealthy = checks.database === 'healthy';
+
+  return new Response(
+    JSON.stringify({
+      status: isHealthy ? 'healthy' : 'degraded',
+      service: 'test-engine-worker',
+      timestamp: new Date().toISOString(),
+      environment: env.ENVIRONMENT || 'unknown',
+      checks,
+      uptime: Date.now(),
+    }),
+    {
+      status: isHealthy ? 200 : 503,
+      headers: { 'Content-Type': 'application/json' },
+    }
+  );
+}
+
 // Initialize router
 const router = new Router();
 
+// Health check routes
+router.get('/health', handleHealth);
+router.get('/health/detailed', handleDetailedHealth);
+
+// Test engine routes
 router.get('/tests/available', handleGetAvailableTests);
 router.post('/tests/start', handleStartTest);
 router.get('/tests/session/:id', handleGetSession);

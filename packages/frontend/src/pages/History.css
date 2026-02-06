@@ -1,0 +1,42 @@
+.history-page {
+  min-height: 100vh;
+  background-color: #f5f5f5;
+  padding: 20px;
+}
+
+.history-navigation {
+  max-width: 1200px;
+  margin: 0 auto 20px;
+  display: flex;
+  gap: 10px;
+  background-color: white;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.history-navigation button {
+  padding: 10px 20px;
+  background-color: transparent;
+  color: #555;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.history-navigation button:hover {
+  background-color: #f8f9fa;
+}
+
+.history-navigation button.active {
+  background-color: #007bff;
+  color: white;
+}
+
+.history-content {
+  max-width: 1200px;
+  margin: 0 auto;
+}
