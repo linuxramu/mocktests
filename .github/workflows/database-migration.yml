@@ -40,9 +40,9 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: |
-          DB_ID="${{ secrets.CLOUDFLARE_D1_DATABASE_ID_PROD }}"
+          DB_ID="c2f1c917-21aa-4403-994c-014980f4651a"
           if [ "${{ github.event.inputs.environment }}" = "development" ]; then
-            DB_ID="${{ secrets.CLOUDFLARE_D1_DATABASE_ID_DEV }}"
+            DB_ID="57035540-30f4-40a9-9572-c612c3ef4ce5"
           fi
           npx wrangler d1 execute "$DB_ID" --remote --file="database/migrations/${{ github.event.inputs.migration_file }}"
         continue-on-error: true
@@ -53,9 +53,9 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: |
-          DB_ID="${{ secrets.CLOUDFLARE_D1_DATABASE_ID_PROD }}"
+          DB_ID="c2f1c917-21aa-4403-994c-014980f4651a"
           if [ "${{ github.event.inputs.environment }}" = "development" ]; then
-            DB_ID="${{ secrets.CLOUDFLARE_D1_DATABASE_ID_DEV }}"
+            DB_ID="57035540-30f4-40a9-9572-c612c3ef4ce5"
           fi
 
           # Apply schema if this is initial setup
@@ -75,9 +75,9 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: |
-          DB_ID="${{ secrets.CLOUDFLARE_D1_DATABASE_ID_PROD }}"
+          DB_ID="c2f1c917-21aa-4403-994c-014980f4651a"
           if [ "${{ github.event.inputs.environment }}" = "development" ]; then
-            DB_ID="${{ secrets.CLOUDFLARE_D1_DATABASE_ID_DEV }}"
+            DB_ID="57035540-30f4-40a9-9572-c612c3ef4ce5"
           fi
           npx wrangler d1 execute "$DB_ID" --remote --command="SELECT version, description, applied_at FROM schema_migrations ORDER BY version DESC LIMIT 5"
         continue-on-error: true
