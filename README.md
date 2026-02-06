@@ -1,5 +1,9 @@
 # EAMCET Mock Test Platform
 
+[![Tests](https://github.com/linuxramu/mocktests/workflows/test/badge.svg)](https://github.com/linuxramu/mocktests/actions/workflows/test.yml)
+[![Deploy Workers](https://github.com/linuxramu/mocktests/workflows/deploy-workers/badge.svg)](https://github.com/linuxramu/mocktests/actions/workflows/deploy-workers.yml)
+[![Deploy Frontend](https://github.com/linuxramu/mocktests/workflows/deploy-frontend/badge.svg)](https://github.com/linuxramu/mocktests/actions/workflows/deploy-frontend.yml)
+
 A comprehensive full-stack application designed to help students prepare for the Engineering, Agriculture and Medical Common Entrance Test (EAMCET). Built with TypeScript, React, and Cloudflare's serverless infrastructure.
 
 ## Architecture
