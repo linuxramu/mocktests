@@ -215,27 +215,27 @@ After Task 2 is complete, these can be worked on simultaneously:
     - Test error handling for AI service failures
     - _Requirements: 2.1, 2.2, 2.3, 2.4_
 
-- [ ] 6. Test Engine Core Implementation
+- [x] 6. Test Engine Core Implementation
   - **Dependencies:** Tasks 2, 3, 5
   - **Blocks:** Tasks 7, 10, 12
-  - [ ] 6.1 Implement Test Engine Cloudflare Worker
+  - [x] 6.1 Implement Test Engine Cloudflare Worker
     - Create test session initialization and management
     - Implement real-time timer functionality with WebSocket support
     - Build question navigation and answer submission handling
     - Set up automatic test submission on time expiry
     - _Requirements: 3.1, 3.2, 3.3, 3.4, 3.5_
 
-  - [ ] 6.2 Implement test configuration and customization
+  - [x] 6.2 Implement test configuration and customization
     - Create test type selection (full, subject-wise, custom)
     - Implement question randomization and difficulty distribution
     - Build test duration and question count configuration
     - _Requirements: 3.1, 3.5_
 
-  - [ ] 6.3 Write property test for test session state management
+  - [x] 6.3 Write property test for test session state management
     - **Property 4: Test Session State Management**
     - **Validates: Requirements 3.1, 3.2, 3.4, 3.5, 8.1, 8.4**
 
-  - [ ] 6.4 Write unit tests for test engine functionality
+  - [x] 6.4 Write unit tests for test engine functionality
     - Test session lifecycle management
     - Test timer accuracy and automatic submission
     - Test answer submission and navigation edge cases
