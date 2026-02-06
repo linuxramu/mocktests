@@ -45,7 +45,7 @@ jobs:
           if [ "${{ github.event.inputs.environment }}" = "development" ]; then
             DB_ID="${{ secrets.CLOUDFLARE_D1_DATABASE_ID_DEV }}"
           fi
-          npx wrangler d1 execute "$DB_ID" --file="database/migrations/${{ github.event.inputs.migration_file }}"
+          npx wrangler d1 execute "$DB_ID" --remote --file="database/migrations/${{ github.event.inputs.migration_file }}"
         continue-on-error: true
 
       - name: Apply all pending migrations
@@ -57,13 +57,13 @@ jobs:
           fi
 
           # Apply schema if this is initial setup
-          npx wrangler d1 execute "$DB_ID" --file="database/schema.sql"
+          npx wrangler d1 execute "$DB_ID" --remote --file="database/schema.sql"
 
           # Apply all migration files in order
           for migration in database/migrations/*.sql; do
             if [ -f "$migration" ]; then
               echo "Applying migration: $migration"
-              npx wrangler d1 execute "$DB_ID" --file="$migration"
+              npx wrangler d1 execute "$DB_ID" --remote --file="$migration"
             fi
           done
         continue-on-error: true
@@ -74,5 +74,5 @@ jobs:
           if [ "${{ github.event.inputs.environment }}" = "development" ]; then
             DB_ID="${{ secrets.CLOUDFLARE_D1_DATABASE_ID_DEV }}"
           fi
-          npx wrangler d1 execute "$DB_ID" --command="SELECT version, description, applied_at FROM schema_migrations ORDER BY version DESC LIMIT 5"
+          npx wrangler d1 execute "$DB_ID" --remote --command="SELECT version, description, applied_at FROM schema_migrations ORDER BY version DESC LIMIT 5"
         continue-on-error: true
