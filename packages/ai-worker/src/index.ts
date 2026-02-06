@@ -11,7 +11,7 @@ export default {
       return await router(request, env);
     } catch (error: any) {
       console.error('Unhandled error in AI worker:', error);
-      
+
       return new Response(
         JSON.stringify({
           error: {
