@@ -1,10 +1,26 @@
 name = "eamcet-ai-worker"
 main = "src/index.ts"
-compatibility_date = "2023-12-01"
+compatibility_date = "2024-09-23"
+compatibility_flags = ["nodejs_compat"]
+
+# D1 Database binding
+[[d1_databases]]
+binding = "DB"
+database_name = "eamcet-platform-db"
+database_id = "eamcet-platform-db"
+
+# Local development configuration
+[dev]
+port = 8788
 
 # Development environment
 [env.development]
 name = "eamcet-ai-worker-dev"
+
+[[env.development.d1_databases]]
+binding = "DB"
+database_name = "eamcet-platform-db-dev"
+database_id = "eamcet-platform-db-dev"
 
 [env.development.vars]
 ENVIRONMENT = "development"
@@ -15,6 +31,11 @@ CORS_ORIGINS = "http://localhost:5173,https://eamcet-platform.pages.dev"
 # Production environment
 [env.production]
 name = "eamcet-ai-worker-prod"
+
+[[env.production.d1_databases]]
+binding = "DB"
+database_name = "eamcet-platform-db-prod"
+database_id = "eamcet-platform-db-prod"
 
 [env.production.vars]
 ENVIRONMENT = "production"

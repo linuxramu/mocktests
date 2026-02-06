@@ -18,7 +18,8 @@
   },
   "dependencies": {
     "@eamcet-platform/shared": "*",
-    "zod": "^3.22.0"
+    "zod": "^3.22.0",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20230710.0",

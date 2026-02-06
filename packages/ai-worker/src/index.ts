@@ -1,5 +1,5 @@
 // AI Question Generator Cloudflare Worker
-import { Question } from '@eamcet-platform/shared';
+import { router, Env } from './router';
 
 export default {
   async fetch(
@@ -7,19 +7,30 @@ export default {
     env: Env,
     ctx: ExecutionContext
   ): Promise<Response> {
-    return new Response('AI Worker - Basic deployment successful', {
-      headers: {
-        'Content-Type': 'text/plain',
-        'Access-Control-Allow-Origin': '*',
-      },
-    });
+    try {
+      return await router(request, env);
+    } catch (error: any) {
+      console.error('Unhandled error in AI worker:', error);
+      
+      return new Response(
+        JSON.stringify({
+          error: {
+            code: 'INTERNAL_ERROR',
+            message: 'An unexpected error occurred',
+            timestamp: new Date().toISOString(),
+            requestId: crypto.randomUUID(),
+          },
+        }),
+        {
+          status: 500,
+          headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+          },
+        }
+      );
+    }
   },
 };
 
-export interface Env {
-  // Environment variables
-  ENVIRONMENT?: string;
-  QUESTION_GENERATION_TIMEOUT?: string;
-  MAX_QUESTIONS_PER_BATCH?: string;
-  CORS_ORIGINS?: string;
-}
+export type { Env };
