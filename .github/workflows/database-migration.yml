@@ -38,6 +38,8 @@ jobs:
         if: github.event.inputs.migration_file != ''
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_EMAIL: ${{ secrets.CLOUDFLARE_EMAIL }}
+          CLOUDFLARE_API_KEY: ${{ secrets.CLOUDFLARE_API_KEY }}
         run: |
           DB_ID="${{ secrets.CLOUDFLARE_D1_DATABASE_ID_PROD }}"
           if [ "${{ github.event.inputs.environment }}" = "development" ]; then
@@ -50,6 +52,8 @@ jobs:
         if: github.event.inputs.migration_file == ''
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_EMAIL: ${{ secrets.CLOUDFLARE_EMAIL }}
+          CLOUDFLARE_API_KEY: ${{ secrets.CLOUDFLARE_API_KEY }}
         run: |
           DB_ID="${{ secrets.CLOUDFLARE_D1_DATABASE_ID_PROD }}"
           if [ "${{ github.event.inputs.environment }}" = "development" ]; then
@@ -71,6 +75,8 @@ jobs:
       - name: Verify migration
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_EMAIL: ${{ secrets.CLOUDFLARE_EMAIL }}
+          CLOUDFLARE_API_KEY: ${{ secrets.CLOUDFLARE_API_KEY }}
         run: |
           DB_ID="${{ secrets.CLOUDFLARE_D1_DATABASE_ID_PROD }}"
           if [ "${{ github.event.inputs.environment }}" = "development" ]; then
