@@ -2,9 +2,19 @@ name = "eamcet-analytics-worker"
 main = "src/index.ts"
 compatibility_date = "2023-12-01"
 
+[[d1_databases]]
+binding = "DB"
+database_name = "eamcet-platform-db"
+database_id = "c2f1c917-21aa-4403-994c-014980f4651a"
+
 # Development environment
 [env.development]
 name = "eamcet-analytics-worker-dev"
+
+[[env.development.d1_databases]]
+binding = "DB"
+database_name = "eamcet-platform-db-dev"
+database_id = "57035540-30f4-40a9-9572-c612c3ef4ce5"
 
 [env.development.vars]
 ENVIRONMENT = "development"
