@@ -17,6 +17,7 @@ database_name = "eamcet-platform-db-dev"
 database_id = "57035540-30f4-40a9-9572-c612c3ef4ce5"
 
 [env.development.vars]
+JWT_SECRET = "dev-secret-key-change-in-production-12345678"
 ENVIRONMENT = "development"
 BCRYPT_ROUNDS = "12"
 SESSION_TIMEOUT = "86400"
@@ -34,6 +35,7 @@ CORS_ORIGINS = "http://localhost:5173,https://eamcet-platform.pages.dev"
 
 # Default environment variables for local development
 [vars]
+JWT_SECRET = "dev-secret-key-change-in-production-12345678"
 BCRYPT_ROUNDS = "12"
 SESSION_TIMEOUT = "86400"
 CORS_ORIGINS = "http://localhost:5173,https://eamcet-platform.pages.dev"
