@@ -52,7 +52,9 @@ export async function executeQuery<T = unknown>(
     return await boundStmt.all<T>();
   } catch (error) {
     console.error('Database query error:', error);
-    throw new Error(`Database query failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    throw new Error(
+      `Database query failed: ${error instanceof Error ? error.message : 'Unknown error'}`
+    );
   }
 }
 
@@ -70,7 +72,9 @@ export async function executeQueryFirst<T = unknown>(
     return await boundStmt.first<T>();
   } catch (error) {
     console.error('Database query error:', error);
-    throw new Error(`Database query failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    throw new Error(
+      `Database query failed: ${error instanceof Error ? error.message : 'Unknown error'}`
+    );
   }
 }
 
@@ -88,7 +92,9 @@ export async function executeWrite(
     return await boundStmt.run();
   } catch (error) {
     console.error('Database write error:', error);
-    throw new Error(`Database write failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    throw new Error(
+      `Database write failed: ${error instanceof Error ? error.message : 'Unknown error'}`
+    );
   }
 }
 
@@ -107,14 +113,18 @@ export async function executeBatch<T = unknown>(
     return await db.batch<T>(statements);
   } catch (error) {
     console.error('Database batch error:', error);
-    throw new Error(`Database batch failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    throw new Error(
+      `Database batch failed: ${error instanceof Error ? error.message : 'Unknown error'}`
+    );
   }
 }
 
 /**
  * Check if database is accessible
  */
-export async function checkDatabaseConnection(db: D1Database): Promise<boolean> {
+export async function checkDatabaseConnection(
+  db: D1Database
+): Promise<boolean> {
   try {
     const result = await executeQueryFirst<{ result: number }>(
       db,

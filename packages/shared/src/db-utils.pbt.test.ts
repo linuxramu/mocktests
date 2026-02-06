@@ -1,10 +1,10 @@
 /**
  * Property-Based Tests for Data Persistence Round Trip
  * Feature: eamcet-mock-test-platform, Property 2: Data Persistence Round Trip
- * 
+ *
  * **Validates: Requirements 1.4, 1.5, 2.5, 3.3, 6.1**
- * 
- * For any user data (profiles, test results, answers), storing then retrieving 
+ *
+ * For any user data (profiles, test results, answers), storing then retrieving
  * the data should produce equivalent information without loss or corruption.
  */
 
@@ -33,7 +33,13 @@ import {
   arbitraryPerformanceAnalytics,
   PBT_CONFIG,
 } from './test-utils/property-generators';
-import type { User, TestSession, Question, UserAnswer, PerformanceAnalytics } from './types';
+import type {
+  User,
+  TestSession,
+  Question,
+  UserAnswer,
+  PerformanceAnalytics,
+} from './types';
 
 describe('Property 2: Data Persistence Round Trip', () => {
   describe('User data round trip', () => {
@@ -41,27 +47,38 @@ describe('Property 2: Data Persistence Round Trip', () => {
       fc.assert(
         fc.property(arbitraryUser(), (user: User) => {
           // Add password hash for database row conversion
-          const userWithPassword = { ...user, passwordHash: 'hashed_password_123' };
-          
+          const userWithPassword = {
+            ...user,
+            passwordHash: 'hashed_password_123',
+          };
+
           // Convert to database row format
           const row = userToRow(userWithPassword);
-          
+
           // Simulate database storage by converting to JSON and back
           const storedRow = JSON.parse(JSON.stringify(row));
-          
+
           // Convert back to User object
           const retrievedUser = rowToUser(storedRow);
-          
+
           // Verify all fields are preserved
           expect(retrievedUser.id).toBe(user.id);
           expect(retrievedUser.email).toBe(user.email);
           expect(retrievedUser.name).toBe(user.name);
           expect(retrievedUser.emailVerified).toBe(user.emailVerified);
-          
+
           // Dates should be equivalent (within 1 second due to ISO string conversion)
-          expect(Math.abs(retrievedUser.createdAt.getTime() - user.createdAt.getTime())).toBeLessThan(1000);
-          expect(Math.abs(retrievedUser.updatedAt.getTime() - user.updatedAt.getTime())).toBeLessThan(1000);
-          
+          expect(
+            Math.abs(
+              retrievedUser.createdAt.getTime() - user.createdAt.getTime()
+            )
+          ).toBeLessThan(1000);
+          expect(
+            Math.abs(
+              retrievedUser.updatedAt.getTime() - user.updatedAt.getTime()
+            )
+          ).toBeLessThan(1000);
+
           // Profile data should be deeply equal
           expect(retrievedUser.profileData).toEqual(user.profileData);
         }),
@@ -76,39 +93,56 @@ describe('Property 2: Data Persistence Round Trip', () => {
         fc.property(arbitraryTestSession(), (session: TestSession) => {
           // Convert to database row format
           const row = testSessionToRow(session);
-          
+
           // Simulate database storage
           const storedRow = JSON.parse(JSON.stringify(row));
-          
+
           // Convert back to TestSession object
           const retrievedSession = rowToTestSession(storedRow);
-          
+
           // Verify all fields are preserved
           expect(retrievedSession.id).toBe(session.id);
           expect(retrievedSession.userId).toBe(session.userId);
           expect(retrievedSession.testType).toBe(session.testType);
           expect(retrievedSession.status).toBe(session.status);
           expect(retrievedSession.totalQuestions).toBe(session.totalQuestions);
-          
+
           // Handle null/undefined conversion for durationSeconds
-          if (session.durationSeconds === null || session.durationSeconds === undefined) {
+          if (
+            session.durationSeconds === null ||
+            session.durationSeconds === undefined
+          ) {
             expect(retrievedSession.durationSeconds).toBeUndefined();
           } else {
-            expect(retrievedSession.durationSeconds).toBe(session.durationSeconds);
+            expect(retrievedSession.durationSeconds).toBe(
+              session.durationSeconds
+            );
           }
-          
+
           // Dates should be equivalent
-          expect(Math.abs(retrievedSession.startedAt.getTime() - session.startedAt.getTime())).toBeLessThan(1000);
-          
+          expect(
+            Math.abs(
+              retrievedSession.startedAt.getTime() - session.startedAt.getTime()
+            )
+          ).toBeLessThan(1000);
+
           // Handle null/undefined conversion for completedAt
-          if (session.completedAt === null || session.completedAt === undefined) {
+          if (
+            session.completedAt === null ||
+            session.completedAt === undefined
+          ) {
             expect(retrievedSession.completedAt).toBeUndefined();
           } else if (retrievedSession.completedAt) {
-            expect(Math.abs(retrievedSession.completedAt.getTime() - session.completedAt.getTime())).toBeLessThan(1000);
+            expect(
+              Math.abs(
+                retrievedSession.completedAt.getTime() -
+                  session.completedAt.getTime()
+              )
+            ).toBeLessThan(1000);
           } else {
             expect(retrievedSession.completedAt).toBe(session.completedAt);
           }
-          
+
           // Configuration should be deeply equal
           expect(retrievedSession.configuration).toEqual(session.configuration);
         }),
@@ -123,32 +157,35 @@ describe('Property 2: Data Persistence Round Trip', () => {
         fc.property(arbitraryQuestion(), (question: Question) => {
           // Convert to database row format
           const row = questionToRow(question);
-          
+
           // Simulate database storage
           const storedRow = JSON.parse(JSON.stringify(row));
-          
+
           // Convert back to Question object
           const retrievedQuestion = rowToQuestion(storedRow);
-          
+
           // Verify all fields are preserved
           expect(retrievedQuestion.id).toBe(question.id);
           expect(retrievedQuestion.subject).toBe(question.subject);
           expect(retrievedQuestion.difficulty).toBe(question.difficulty);
           expect(retrievedQuestion.questionText).toBe(question.questionText);
           expect(retrievedQuestion.correctAnswer).toBe(question.correctAnswer);
-          
+
           // Handle null/undefined conversion for explanation
-          if (question.explanation === null || question.explanation === undefined) {
+          if (
+            question.explanation === null ||
+            question.explanation === undefined
+          ) {
             expect(retrievedQuestion.explanation).toBeUndefined();
           } else {
             expect(retrievedQuestion.explanation).toBe(question.explanation);
           }
-          
+
           expect(retrievedQuestion.sourcePattern).toBe(question.sourcePattern);
-          
+
           // Arrays should be deeply equal
           expect(retrievedQuestion.options).toEqual(question.options);
-          
+
           // Metadata should be deeply equal
           expect(retrievedQuestion.metadata).toEqual(question.metadata);
         }),
@@ -163,34 +200,46 @@ describe('Property 2: Data Persistence Round Trip', () => {
         fc.property(arbitraryUserAnswer(), (answer: UserAnswer) => {
           // Convert to database row format
           const row = userAnswerToRow(answer);
-          
+
           // Simulate database storage
           const storedRow = JSON.parse(JSON.stringify(row));
-          
+
           // Convert back to UserAnswer object
           const retrievedAnswer = rowToUserAnswer(storedRow);
-          
+
           // Verify all fields are preserved
           expect(retrievedAnswer.id).toBe(answer.id);
           expect(retrievedAnswer.testSessionId).toBe(answer.testSessionId);
           expect(retrievedAnswer.questionId).toBe(answer.questionId);
-          
+
           // Handle null/undefined conversion for selectedAnswer
-          if (answer.selectedAnswer === null || answer.selectedAnswer === undefined) {
+          if (
+            answer.selectedAnswer === null ||
+            answer.selectedAnswer === undefined
+          ) {
             expect(retrievedAnswer.selectedAnswer).toBeUndefined();
           } else {
             expect(retrievedAnswer.selectedAnswer).toBe(answer.selectedAnswer);
           }
-          
+
           expect(retrievedAnswer.isCorrect).toBe(answer.isCorrect);
-          expect(retrievedAnswer.timeSpentSeconds).toBe(answer.timeSpentSeconds);
-          expect(retrievedAnswer.isMarkedForReview).toBe(answer.isMarkedForReview);
-          
+          expect(retrievedAnswer.timeSpentSeconds).toBe(
+            answer.timeSpentSeconds
+          );
+          expect(retrievedAnswer.isMarkedForReview).toBe(
+            answer.isMarkedForReview
+          );
+
           // Handle null/undefined conversion for answeredAt
           if (answer.answeredAt === null || answer.answeredAt === undefined) {
             expect(retrievedAnswer.answeredAt).toBeUndefined();
           } else if (retrievedAnswer.answeredAt) {
-            expect(Math.abs(retrievedAnswer.answeredAt.getTime() - answer.answeredAt.getTime())).toBeLessThan(1000);
+            expect(
+              Math.abs(
+                retrievedAnswer.answeredAt.getTime() -
+                  answer.answeredAt.getTime()
+              )
+            ).toBeLessThan(1000);
           } else {
             expect(retrievedAnswer.answeredAt).toBe(answer.answeredAt);
           }
@@ -203,49 +252,69 @@ describe('Property 2: Data Persistence Round Trip', () => {
   describe('PerformanceAnalytics data round trip', () => {
     it('should preserve performance analytics data through serialization and deserialization', () => {
       fc.assert(
-        fc.property(arbitraryPerformanceAnalytics(), (analytics: PerformanceAnalytics) => {
-          // Convert to database row format
-          const row = performanceAnalyticsToRow(analytics);
-          
-          // Simulate database storage
-          const storedRow = JSON.parse(JSON.stringify(row));
-          
-          // Convert back to PerformanceAnalytics object
-          const retrievedAnalytics = rowToPerformanceAnalytics(storedRow);
-          
-          // Verify all fields are preserved
-          expect(retrievedAnalytics.id).toBe(analytics.id);
-          expect(retrievedAnalytics.userId).toBe(analytics.userId);
-          expect(retrievedAnalytics.testSessionId).toBe(analytics.testSessionId);
-          expect(retrievedAnalytics.subject).toBe(analytics.subject);
-          expect(retrievedAnalytics.totalQuestions).toBe(analytics.totalQuestions);
-          
-          // Handle NaN values - they become 0 after database round trip
-          if (isNaN(analytics.correctAnswers)) {
-            expect(retrievedAnalytics.correctAnswers).toBe(0);
-          } else {
-            expect(retrievedAnalytics.correctAnswers).toBe(analytics.correctAnswers);
+        fc.property(
+          arbitraryPerformanceAnalytics(),
+          (analytics: PerformanceAnalytics) => {
+            // Convert to database row format
+            const row = performanceAnalyticsToRow(analytics);
+
+            // Simulate database storage
+            const storedRow = JSON.parse(JSON.stringify(row));
+
+            // Convert back to PerformanceAnalytics object
+            const retrievedAnalytics = rowToPerformanceAnalytics(storedRow);
+
+            // Verify all fields are preserved
+            expect(retrievedAnalytics.id).toBe(analytics.id);
+            expect(retrievedAnalytics.userId).toBe(analytics.userId);
+            expect(retrievedAnalytics.testSessionId).toBe(
+              analytics.testSessionId
+            );
+            expect(retrievedAnalytics.subject).toBe(analytics.subject);
+            expect(retrievedAnalytics.totalQuestions).toBe(
+              analytics.totalQuestions
+            );
+
+            // Handle NaN values - they become 0 after database round trip
+            if (isNaN(analytics.correctAnswers)) {
+              expect(retrievedAnalytics.correctAnswers).toBe(0);
+            } else {
+              expect(retrievedAnalytics.correctAnswers).toBe(
+                analytics.correctAnswers
+              );
+            }
+
+            if (isNaN(analytics.accuracyPercentage)) {
+              expect(retrievedAnalytics.accuracyPercentage).toBe(0);
+            } else {
+              expect(retrievedAnalytics.accuracyPercentage).toBeCloseTo(
+                analytics.accuracyPercentage,
+                2
+              );
+            }
+
+            if (isNaN(analytics.averageTimePerQuestion)) {
+              expect(retrievedAnalytics.averageTimePerQuestion).toBe(0);
+            } else {
+              expect(retrievedAnalytics.averageTimePerQuestion).toBeCloseTo(
+                analytics.averageTimePerQuestion,
+                2
+              );
+            }
+
+            // Arrays should be deeply equal
+            expect(retrievedAnalytics.strengths).toEqual(analytics.strengths);
+            expect(retrievedAnalytics.weaknesses).toEqual(analytics.weaknesses);
+
+            // Date should be equivalent
+            expect(
+              Math.abs(
+                retrievedAnalytics.calculatedAt.getTime() -
+                  analytics.calculatedAt.getTime()
+              )
+            ).toBeLessThan(1000);
           }
-          
-          if (isNaN(analytics.accuracyPercentage)) {
-            expect(retrievedAnalytics.accuracyPercentage).toBe(0);
-          } else {
-            expect(retrievedAnalytics.accuracyPercentage).toBeCloseTo(analytics.accuracyPercentage, 2);
-          }
-          
-          if (isNaN(analytics.averageTimePerQuestion)) {
-            expect(retrievedAnalytics.averageTimePerQuestion).toBe(0);
-          } else {
-            expect(retrievedAnalytics.averageTimePerQuestion).toBeCloseTo(analytics.averageTimePerQuestion, 2);
-          }
-          
-          // Arrays should be deeply equal
-          expect(retrievedAnalytics.strengths).toEqual(analytics.strengths);
-          expect(retrievedAnalytics.weaknesses).toEqual(analytics.weaknesses);
-          
-          // Date should be equivalent
-          expect(Math.abs(retrievedAnalytics.calculatedAt.getTime() - analytics.calculatedAt.getTime())).toBeLessThan(1000);
-        }),
+        ),
         PBT_CONFIG
       );
     });
@@ -282,7 +351,7 @@ describe('Property 2: Data Persistence Round Trip', () => {
             fc.string(),
             fc.integer()
           ),
-          (value) => {
+          value => {
             const jsonString = JSON.stringify(value);
             const parsed = parseJsonSafe(jsonString, null);
             expect(parsed).toEqual(value);
@@ -324,16 +393,22 @@ describe('Property 2: Data Persistence Round Trip', () => {
     it('should maintain data integrity through multiple serialization cycles', () => {
       fc.assert(
         fc.property(arbitraryUser(), (user: User) => {
-          const userWithPassword = { ...user, passwordHash: 'hashed_password_123' };
-          
+          const userWithPassword = {
+            ...user,
+            passwordHash: 'hashed_password_123',
+          };
+
           // Perform multiple round trips
           let currentUser = user;
           for (let i = 0; i < 5; i++) {
-            const row = userToRow({ ...currentUser, passwordHash: 'hashed_password_123' });
+            const row = userToRow({
+              ...currentUser,
+              passwordHash: 'hashed_password_123',
+            });
             const storedRow = JSON.parse(JSON.stringify(row));
             currentUser = rowToUser(storedRow);
           }
-          
+
           // After 5 round trips, data should still match
           expect(currentUser.id).toBe(user.id);
           expect(currentUser.email).toBe(user.email);

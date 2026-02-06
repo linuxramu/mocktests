@@ -14,7 +14,9 @@ import type {
 // User schemas
 export const UserProfileDataSchema = z.object({
   targetScore: z.number().min(0).max(200).optional(),
-  preferredSubjects: z.array(z.enum(['physics', 'chemistry', 'mathematics'])).optional(),
+  preferredSubjects: z
+    .array(z.enum(['physics', 'chemistry', 'mathematics']))
+    .optional(),
   studyGoals: z.array(z.string()).optional(),
   timeZone: z.string().optional(),
 }) satisfies z.ZodType<UserProfileData>;
@@ -165,4 +167,6 @@ export type UserRow = z.infer<typeof UserRowSchema>;
 export type TestSessionRow = z.infer<typeof TestSessionRowSchema>;
 export type QuestionRow = z.infer<typeof QuestionRowSchema>;
 export type UserAnswerRow = z.infer<typeof UserAnswerRowSchema>;
-export type PerformanceAnalyticsRow = z.infer<typeof PerformanceAnalyticsRowSchema>;
+export type PerformanceAnalyticsRow = z.infer<
+  typeof PerformanceAnalyticsRowSchema
+>;

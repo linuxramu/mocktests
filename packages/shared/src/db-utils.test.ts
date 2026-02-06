@@ -86,7 +86,9 @@ describe('Database Utility Functions', () => {
 
   describe('Input sanitization', () => {
     it('should remove SQL injection characters', () => {
-      expect(sanitizeInput("test'; DROP TABLE users;--")).toBe('test DROP TABLE users--');
+      expect(sanitizeInput("test'; DROP TABLE users;--")).toBe(
+        'test DROP TABLE users--'
+      );
       expect(sanitizeInput('normal text')).toBe('normal text');
       expect(sanitizeInput('test"value')).toBe('testvalue');
       expect(sanitizeInput("test'value")).toBe('testvalue');
@@ -100,7 +102,8 @@ describe('Database Utility Functions', () => {
   describe('UUID generation', () => {
     it('should generate valid UUID format', () => {
       const uuid = generateUUID();
-      const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+      const uuidRegex =
+        /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
       expect(uuid).toMatch(uuidRegex);
     });
 
@@ -263,9 +266,15 @@ describe('Database Utility Functions', () => {
         subject: 'physics',
         difficulty: 'medium',
         questionText: 'What is the speed of light?',
-        options: ['299,792 km/s', '300,000 km/s', '150,000 km/s', '500,000 km/s'],
+        options: [
+          '299,792 km/s',
+          '300,000 km/s',
+          '150,000 km/s',
+          '500,000 km/s',
+        ],
         correctAnswer: 'A',
-        explanation: 'The speed of light in vacuum is approximately 299,792 km/s',
+        explanation:
+          'The speed of light in vacuum is approximately 299,792 km/s',
         sourcePattern: 'EAMCET-2023-Physics',
         metadata: {
           topic: 'Optics',
@@ -293,9 +302,15 @@ describe('Database Utility Functions', () => {
         subject: 'physics',
         difficulty: 'medium',
         question_text: 'What is the speed of light?',
-        options: JSON.stringify(['299,792 km/s', '300,000 km/s', '150,000 km/s', '500,000 km/s']),
+        options: JSON.stringify([
+          '299,792 km/s',
+          '300,000 km/s',
+          '150,000 km/s',
+          '500,000 km/s',
+        ]),
         correct_answer: 'A',
-        explanation: 'The speed of light in vacuum is approximately 299,792 km/s',
+        explanation:
+          'The speed of light in vacuum is approximately 299,792 km/s',
         source_pattern: 'EAMCET-2023-Physics',
         metadata: JSON.stringify({
           topic: 'Optics',
@@ -310,7 +325,12 @@ describe('Database Utility Functions', () => {
       expect(question.subject).toBe('physics');
       expect(question.difficulty).toBe('medium');
       expect(question.questionText).toBe(row.question_text);
-      expect(question.options).toEqual(['299,792 km/s', '300,000 km/s', '150,000 km/s', '500,000 km/s']);
+      expect(question.options).toEqual([
+        '299,792 km/s',
+        '300,000 km/s',
+        '150,000 km/s',
+        '500,000 km/s',
+      ]);
       expect(question.correctAnswer).toBe('A');
       expect(question.metadata.topic).toBe('Optics');
     });

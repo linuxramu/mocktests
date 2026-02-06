@@ -35,7 +35,10 @@ export function booleanToSqlite(value: boolean): number {
 /**
  * Parse JSON string safely
  */
-export function parseJsonSafe<T>(jsonString: string | null, defaultValue: T): T {
+export function parseJsonSafe<T>(
+  jsonString: string | null,
+  defaultValue: T
+): T {
   if (!jsonString) return defaultValue;
   try {
     return JSON.parse(jsonString) as T;
@@ -71,7 +74,10 @@ export function userToRow(user: Partial<User> & { passwordHash?: string }) {
     name: user.name,
     created_at: user.createdAt?.toISOString(),
     updated_at: user.updatedAt?.toISOString(),
-    email_verified: user.emailVerified !== undefined ? booleanToSqlite(user.emailVerified) : undefined,
+    email_verified:
+      user.emailVerified !== undefined
+        ? booleanToSqlite(user.emailVerified)
+        : undefined,
     profile_data: user.profileData ? JSON.stringify(user.profileData) : null,
   };
 }
@@ -81,7 +87,7 @@ export function userToRow(user: Partial<User> & { passwordHash?: string }) {
  */
 export function rowToTestSession(row: unknown): TestSession {
   const parsed = TestSessionRowSchema.parse(row);
-  
+
   // Parse configuration with proper null handling
   const defaultConfig: TestConfiguration = {
     subjects: [],
@@ -90,17 +96,22 @@ export function rowToTestSession(row: unknown): TestSession {
     difficulty: 'mixed',
     randomizeQuestions: false,
   };
-  
+
   return {
     id: parsed.id,
     userId: parsed.user_id,
     testType: parsed.test_type as 'full' | 'subject-wise' | 'custom',
     status: parsed.status as 'active' | 'completed' | 'abandoned',
     startedAt: new Date(parsed.started_at),
-    completedAt: parsed.completed_at ? new Date(parsed.completed_at) : undefined,
-    durationSeconds: parsed.duration_seconds === null ? undefined : parsed.duration_seconds,
+    completedAt: parsed.completed_at
+      ? new Date(parsed.completed_at)
+      : undefined,
+    durationSeconds:
+      parsed.duration_seconds === null ? undefined : parsed.duration_seconds,
     totalQuestions: parsed.total_questions,
-    configuration: parsed.configuration ? parseJsonSafe<TestConfiguration>(parsed.configuration, defaultConfig) : defaultConfig,
+    configuration: parsed.configuration
+      ? parseJsonSafe<TestConfiguration>(parsed.configuration, defaultConfig)
+      : defaultConfig,
   };
 }
 
@@ -117,7 +128,9 @@ export function testSessionToRow(session: Partial<TestSession>) {
     completed_at: session.completedAt?.toISOString() ?? null,
     duration_seconds: session.durationSeconds ?? null,
     total_questions: session.totalQuestions,
-    configuration: session.configuration ? JSON.stringify(session.configuration) : null,
+    configuration: session.configuration
+      ? JSON.stringify(session.configuration)
+      : null,
   };
 }
 
@@ -169,10 +182,12 @@ export function rowToUserAnswer(row: unknown): UserAnswer {
     id: parsed.id,
     testSessionId: parsed.test_session_id,
     questionId: parsed.question_id,
-    selectedAnswer: parsed.selected_answer === null ? undefined : parsed.selected_answer,
+    selectedAnswer:
+      parsed.selected_answer === null ? undefined : parsed.selected_answer,
     isCorrect: sqliteToBoolean(parsed.is_correct),
     timeSpentSeconds: parsed.time_spent_seconds ?? 0,
-    answeredAt: parsed.answered_at === null ? undefined : new Date(parsed.answered_at),
+    answeredAt:
+      parsed.answered_at === null ? undefined : new Date(parsed.answered_at),
     isMarkedForReview: sqliteToBoolean(parsed.is_marked_for_review),
   };
 }
@@ -186,10 +201,14 @@ export function userAnswerToRow(answer: Partial<UserAnswer>) {
     test_session_id: answer.testSessionId,
     question_id: answer.questionId,
     selected_answer: answer.selectedAnswer ?? null,
-    is_correct: answer.isCorrect !== undefined ? booleanToSqlite(answer.isCorrect) : null,
+    is_correct:
+      answer.isCorrect !== undefined ? booleanToSqlite(answer.isCorrect) : null,
     time_spent_seconds: answer.timeSpentSeconds ?? 0,
     answered_at: answer.answeredAt?.toISOString() ?? null,
-    is_marked_for_review: answer.isMarkedForReview !== undefined ? booleanToSqlite(answer.isMarkedForReview) : 0,
+    is_marked_for_review:
+      answer.isMarkedForReview !== undefined
+        ? booleanToSqlite(answer.isMarkedForReview)
+        : 0,
   };
 }
 
@@ -216,18 +235,25 @@ export function rowToPerformanceAnalytics(row: unknown): PerformanceAnalytics {
 /**
  * Convert PerformanceAnalytics object to database row format
  */
-export function performanceAnalyticsToRow(analytics: Partial<PerformanceAnalytics>) {
+export function performanceAnalyticsToRow(
+  analytics: Partial<PerformanceAnalytics>
+) {
   // Handle NaN values by converting them to null for database storage
-  const correctAnswers = analytics.correctAnswers !== undefined && !isNaN(analytics.correctAnswers) 
-    ? analytics.correctAnswers 
-    : null;
-  const accuracyPercentage = analytics.accuracyPercentage !== undefined && !isNaN(analytics.accuracyPercentage)
-    ? analytics.accuracyPercentage
-    : null;
-  const averageTimePerQuestion = analytics.averageTimePerQuestion !== undefined && !isNaN(analytics.averageTimePerQuestion)
-    ? analytics.averageTimePerQuestion
-    : null;
-  
+  const correctAnswers =
+    analytics.correctAnswers !== undefined && !isNaN(analytics.correctAnswers)
+      ? analytics.correctAnswers
+      : null;
+  const accuracyPercentage =
+    analytics.accuracyPercentage !== undefined &&
+    !isNaN(analytics.accuracyPercentage)
+      ? analytics.accuracyPercentage
+      : null;
+  const averageTimePerQuestion =
+    analytics.averageTimePerQuestion !== undefined &&
+    !isNaN(analytics.averageTimePerQuestion)
+      ? analytics.averageTimePerQuestion
+      : null;
+
   return {
     id: analytics.id,
     user_id: analytics.userId,
@@ -238,7 +264,9 @@ export function performanceAnalyticsToRow(analytics: Partial<PerformanceAnalytic
     accuracy_percentage: accuracyPercentage,
     average_time_per_question: averageTimePerQuestion,
     strengths: analytics.strengths ? JSON.stringify(analytics.strengths) : null,
-    weaknesses: analytics.weaknesses ? JSON.stringify(analytics.weaknesses) : null,
+    weaknesses: analytics.weaknesses
+      ? JSON.stringify(analytics.weaknesses)
+      : null,
     calculated_at: analytics.calculatedAt?.toISOString(),
   };
 }
@@ -255,7 +283,8 @@ export function generateUUID(): string {
  */
 export function isValidEmail(email: string): boolean {
   // Basic email validation - no consecutive dots, no spaces, valid structure
-  const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+  const emailRegex =
+    /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
   return emailRegex.test(email) && !email.includes('..');
 }
 
