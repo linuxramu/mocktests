@@ -3,16 +3,19 @@
 ## Start the Authentication Worker
 
 ### Option 1: Using the script (Easiest)
+
 ```bash
 ./start.sh
 ```
 
 ### Option 2: Using npm
+
 ```bash
 npm run dev
 ```
 
 ### Option 3: From project root
+
 ```bash
 cd packages/auth-worker && npm run dev
 ```
@@ -22,6 +25,7 @@ cd packages/auth-worker && npm run dev
 ## ✅ Verify It's Running
 
 Open another terminal and test:
+
 ```bash
 curl http://localhost:8787/auth/verify
 ```
@@ -44,21 +48,24 @@ You should see an error about missing token (that's good! It means the auth work
 ## ⚠️ Troubleshooting
 
 ### "Failed to fetch" error in UI
+
 - **Cause**: Worker is not running or wrong worker is running
-- **Fix**: 
+- **Fix**:
   1. Stop any running workers (Ctrl+C in terminal)
   2. Make sure you're in `packages/auth-worker` directory
   3. Run `npm run dev`
   4. Verify with: `curl http://localhost:8787/auth/verify`
 
 ### Wrong worker is running
+
 - **Symptom**: You see "AI Worker" or other worker message
-- **Fix**: 
+- **Fix**:
   1. Kill the process: `lsof -i :8787` then `kill -9 <PID>`
   2. Navigate to auth-worker: `cd packages/auth-worker`
   3. Start: `npm run dev`
 
 ### Port 8787 already in use
+
 - **Fix**: Kill the existing process:
   ```bash
   lsof -i :8787
@@ -83,5 +90,6 @@ You should see an error about missing token (that's good! It means the auth work
 ## 🎯 Next Steps
 
 After testing, continue to:
+
 - Task 5: AI Question Generation System
 - Task 6: Test Engine Core Implementation

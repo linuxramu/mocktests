@@ -3,6 +3,12 @@ main = "src/index.ts"
 compatibility_date = "2024-09-23"
 compatibility_flags = ["nodejs_compat"]
 
+# Exclude test files from worker bundle
+[[rules]]
+type = "Text"
+globs = ["**/*.test.ts", "**/*.test.js", "**/*.pbt.test.ts", "**/*.spec.ts"]
+fallthrough = false
+
 [[d1_databases]]
 binding = "DB"
 database_name = "eamcet-platform-db"
