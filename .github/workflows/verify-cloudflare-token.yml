@@ -1,0 +1,165 @@
+name: Verify Cloudflare Token
+
+on:
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    name: Verify Cloudflare API Token
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Verify Token Format
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          echo "Checking if token is set..."
+          if [ -z "$CLOUDFLARE_API_TOKEN" ]; then
+            echo "❌ CLOUDFLARE_API_TOKEN is not set"
+            exit 1
+          fi
+          
+          echo "✅ Token is set"
+          echo "Token length: ${#CLOUDFLARE_API_TOKEN} characters"
+          
+          # Check for whitespace
+          if [[ "$CLOUDFLARE_API_TOKEN" =~ [[:space:]] ]]; then
+            echo "⚠️  WARNING: Token contains whitespace characters"
+          else
+            echo "✅ Token has no whitespace"
+          fi
+
+      - name: Verify Token with Cloudflare API
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          echo "Verifying token with Cloudflare API..."
+          
+          response=$(curl -s -w "\n%{http_code}" -X GET "https://api.cloudflare.com/client/v4/user/tokens/verify" \
+            -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
+            -H "Content-Type: application/json")
+          
+          http_code=$(echo "$response" | tail -n1)
+          body=$(echo "$response" | sed '$d')
+          
+          echo "HTTP Status: $http_code"
+          echo "Response: $body"
+          
+          if [ "$http_code" = "200" ]; then
+            echo "✅ Token is valid"
+            echo "$body" | jq '.'
+          else
+            echo "❌ Token verification failed"
+            exit 1
+          fi
+
+      - name: Check Account Access
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          echo "Checking account access..."
+          
+          response=$(curl -s -w "\n%{http_code}" -X GET "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID" \
+            -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
+            -H "Content-Type: application/json")
+          
+          http_code=$(echo "$response" | tail -n1)
+          body=$(echo "$response" | sed '$d')
+          
+          echo "HTTP Status: $http_code"
+          
+          if [ "$http_code" = "200" ]; then
+            echo "✅ Can access account"
+            echo "$body" | jq '.result.name'
+          else
+            echo "❌ Cannot access account"
+            echo "$body" | jq '.'
+            exit 1
+          fi
+
+      - name: Check D1 Database Access
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          echo "Checking D1 database access..."
+          
+          response=$(curl -s -w "\n%{http_code}" -X GET "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/d1/database" \
+            -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
+            -H "Content-Type: application/json")
+          
+          http_code=$(echo "$response" | tail -n1)
+          body=$(echo "$response" | sed '$d')
+          
+          echo "HTTP Status: $http_code"
+          
+          if [ "$http_code" = "200" ]; then
+            echo "✅ Can access D1 databases"
+            echo "$body" | jq '.result[] | {name: .name, uuid: .uuid}'
+          else
+            echo "❌ Cannot access D1 databases"
+            echo "$body" | jq '.'
+            exit 1
+          fi
+
+      - name: Verify Specific Database Access
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          DB_ID_DEV: ${{ secrets.CLOUDFLARE_D1_DATABASE_ID_DEV }}
+          DB_ID_PROD: ${{ secrets.CLOUDFLARE_D1_DATABASE_ID_PROD }}
+        run: |
+          echo "Checking development database..."
+          
+          response=$(curl -s -w "\n%{http_code}" -X GET "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/d1/database/$DB_ID_DEV" \
+            -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
+            -H "Content-Type: application/json")
+          
+          http_code=$(echo "$response" | tail -n1)
+          body=$(echo "$response" | sed '$d')
+          
+          if [ "$http_code" = "200" ]; then
+            echo "✅ Can access development database"
+            echo "$body" | jq '.result | {name: .name, uuid: .uuid, version: .version}'
+          else
+            echo "❌ Cannot access development database"
+            echo "$body" | jq '.'
+          fi
+          
+          echo ""
+          echo "Checking production database..."
+          
+          response=$(curl -s -w "\n%{http_code}" -X GET "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/d1/database/$DB_ID_PROD" \
+            -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
+            -H "Content-Type: application/json")
+          
+          http_code=$(echo "$response" | tail -n1)
+          body=$(echo "$response" | sed '$d')
+          
+          if [ "$http_code" = "200" ]; then
+            echo "✅ Can access production database"
+            echo "$body" | jq '.result | {name: .name, uuid: .uuid, version: .version}'
+          else
+            echo "❌ Cannot access production database"
+            echo "$body" | jq '.'
+          fi
+
+      - name: Test Wrangler Authentication
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          echo "Testing wrangler authentication..."
+          npx wrangler whoami || echo "❌ Wrangler authentication failed"
