@@ -266,10 +266,10 @@ Deployment is considered successful when:
 
 ---
 
-**Deployment Date**: ********\_********
+**Deployment Date**: **\*\*\*\***\_**\*\*\*\***
 
-**Deployed By**: ********\_********
+**Deployed By**: **\*\*\*\***\_**\*\*\*\***
 
-**Version**: ********\_********
+**Version**: **\*\*\*\***\_**\*\*\*\***
 
-**Notes**: ********\_********
+**Notes**: **\*\*\*\***\_**\*\*\*\***
