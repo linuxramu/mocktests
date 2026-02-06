@@ -2,29 +2,52 @@
 
 ## Prerequisites
 
-1. **Install jq** (for pretty JSON output):
+**Start the worker**:
+
+```bash
+cd packages/auth-worker
+npm run dev
+```
+
+The worker will start at `http://localhost:8787`
+
+---
+
+## 🎨 Option 1: Test with UI (Easiest!)
+
+1. **Start the worker** (see above)
+
+2. **Open the test UI** in your browser:
    ```bash
-   brew install jq  # macOS
-   # or
-   sudo apt-get install jq  # Linux
+   open test-ui.html
+   # or just double-click the file
    ```
 
-2. **Start the worker**:
-   ```bash
-   cd packages/auth-worker
-   npm run dev
-   ```
-   
-   The worker will start at `http://localhost:8787`
+3. **Test all features** with the visual interface:
+   - Register a new user
+   - Login with credentials
+   - Verify tokens
+   - Get and update profile
+   - Refresh tokens
+   - Logout
 
-## Quick Test (Automated Script)
+The UI automatically stores tokens and shows all responses in a beautiful interface!
+
+---
+
+## 🤖 Option 2: Automated Script
 
 Run the automated test script:
+
 ```bash
 ./test-api.sh
 ```
 
-This will test all endpoints automatically.
+This will test all endpoints automatically (requires `jq` - install with `brew install jq`).
+
+---
+
+## 💻 Option 3: Manual cURL Commands
 
 ---
 
@@ -43,6 +66,7 @@ curl -X POST http://localhost:8787/auth/register \
 ```
 
 **Expected Response:**
+
 ```json
 {
   "user": {
@@ -84,6 +108,7 @@ curl -X GET http://localhost:8787/auth/verify \
 ```
 
 **Expected Response:**
+
 ```json
 {
   "valid": true,
@@ -257,6 +282,7 @@ wrangler d1 execute eamcet-platform-db-dev \
 ## Troubleshooting
 
 ### Worker not starting?
+
 ```bash
 # Make sure you're in the right directory
 cd packages/auth-worker
@@ -269,6 +295,7 @@ npm run dev
 ```
 
 ### Database errors?
+
 ```bash
 # Check if database exists
 wrangler d1 list
@@ -279,6 +306,7 @@ wrangler d1 execute eamcet-platform-db-dev \
 ```
 
 ### Token issues?
+
 - Make sure JWT_SECRET is set in wrangler.toml
 - Check that the token hasn't expired
 - Verify the Authorization header format: `Bearer <token>`
@@ -288,5 +316,6 @@ wrangler d1 execute eamcet-platform-db-dev \
 ## Next Steps
 
 After manual testing is complete:
+
 1. Proceed to Task 5: AI Question Generation System
 2. Or continue to Task 6: Test Engine Core Implementation
