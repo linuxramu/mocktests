@@ -13,7 +13,7 @@ import { AuthProvider } from '../../contexts/AuthContext';
 // Mock useNavigate
 const mockNavigate = vi.fn();
 vi.mock('react-router-dom', async () => {
-  const actual = await vi.importActual('react-router-dom');
+  const actual = (await vi.importActual('react-router-dom')) as Record<string, unknown>;
   return {
     ...actual,
     useNavigate: () => mockNavigate,

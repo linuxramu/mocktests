@@ -360,7 +360,7 @@ describe('Integration Tests - Complete Workflows', () => {
         }),
       });
 
-      renderWithProviders(<PerformanceDashboard userId="user-1" />);
+      renderWithProviders(<PerformanceDashboard />);
 
       // Verify API call
       await waitFor(() => {
@@ -380,7 +380,7 @@ describe('Integration Tests - Complete Workflows', () => {
       // Mock analytics service failure
       mockFetch.mockRejectedValueOnce(new Error('Service unavailable'));
 
-      renderWithProviders(<PerformanceDashboard userId="user-1" />);
+      renderWithProviders(<PerformanceDashboard />);
 
       // Verify graceful degradation
       await waitFor(() => {

@@ -30,7 +30,7 @@ export interface TestSession {
 }
 
 export interface TestConfiguration {
-  subjects: string[];
+  subjects: readonly string[] | string[];
   questionsPerSubject: number;
   timeLimit: number; // in minutes
   difficulty: 'mixed' | 'easy' | 'medium' | 'hard';

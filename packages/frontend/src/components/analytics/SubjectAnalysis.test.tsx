@@ -76,14 +76,15 @@ const mockSubjectData = [
   },
 ];
 
-const mockAuthContext = {
-  user: mockUser,
-  login: vi.fn(),
-  logout: vi.fn(),
-  register: vi.fn(),
-  updateProfile: vi.fn(),
-  loading: false,
-};
+// Unused mock context - kept for future test expansion
+// const mockAuthContext = {
+//   user: mockUser,
+//   login: vi.fn(),
+//   logout: vi.fn(),
+//   register: vi.fn(),
+//   updateProfile: vi.fn(),
+//   loading: false,
+// };
 
 describe('SubjectAnalysis', () => {
   beforeEach(() => {

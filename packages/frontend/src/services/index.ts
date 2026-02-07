@@ -1,7 +1,7 @@
 // Service integration layer connecting all backend workers
 
 import {
-  AuthApiClient,
+  // AuthApiClient, // Reserved for future auth methods
   TestEngineApiClient,
   AnalyticsApiClient,
   AIApiClient,
@@ -83,7 +83,7 @@ export interface ProgressData {
 }
 
 export class IntegratedServices {
-  private authClient: AuthApiClient;
+  // private authClient: AuthApiClient; // Reserved for future auth methods
   private testEngineClient: TestEngineApiClient;
   private analyticsClient: AnalyticsApiClient;
   private aiClient: AIApiClient;
@@ -93,7 +93,7 @@ export class IntegratedServices {
     getAccessToken: () => string | null,
     onTokenExpired: () => Promise<void>
   ) {
-    this.authClient = new AuthApiClient(getAccessToken, onTokenExpired);
+    // this.authClient = new AuthApiClient(getAccessToken, onTokenExpired); // Reserved for future
     this.testEngineClient = new TestEngineApiClient(
       getAccessToken,
       onTokenExpired

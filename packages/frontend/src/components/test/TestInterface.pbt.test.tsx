@@ -11,7 +11,7 @@
 
 import { describe, it, expect } from 'vitest';
 import * as fc from 'fast-check';
-import { Question, TestConfiguration } from '@eamcet-platform/shared';
+import { Question } from '@eamcet-platform/shared';
 
 // Generator for test questions
 const questionArbitrary = (): fc.Arbitrary<Question> =>
@@ -45,23 +45,23 @@ const questionArbitrary = (): fc.Arbitrary<Question> =>
     }),
   });
 
-// Generator for test configuration
-const testConfigArbitrary = (): fc.Arbitrary<TestConfiguration> =>
-  fc.record({
-    subjects: fc.array(fc.constantFrom('physics', 'chemistry', 'mathematics'), {
-      minLength: 1,
-      maxLength: 3,
-    }),
-    questionsPerSubject: fc.integer({ min: 5, max: 50 }),
-    timeLimit: fc.integer({ min: 30, max: 300 }),
-    difficulty: fc.constantFrom(
-      'mixed',
-      'easy',
-      'medium',
-      'hard'
-    ) as fc.Arbitrary<'mixed' | 'easy' | 'medium' | 'hard'>,
-    randomizeQuestions: fc.boolean(),
-  });
+// Generator for test configuration - kept for future property-based tests
+// const testConfigArbitrary = (): fc.Arbitrary<TestConfiguration> =>
+//   fc.record({
+//     subjects: fc.array(fc.constantFrom('physics', 'chemistry', 'mathematics'), {
+//       minLength: 1,
+//       maxLength: 3,
+//     }),
+//     questionsPerSubject: fc.integer({ min: 5, max: 50 }),
+//     timeLimit: fc.integer({ min: 30, max: 300 }),
+//     difficulty: fc.constantFrom(
+//       'mixed',
+//       'easy',
+//       'medium',
+//       'hard'
+//     ) as fc.Arbitrary<'mixed' | 'easy' | 'medium' | 'hard'>,
+//     randomizeQuestions: fc.boolean(),
+//   });
 
 describe('Property 8: Real-Time Performance Monitoring', () => {
   it('should calculate progress percentage correctly for any number of answered questions', () => {

@@ -50,7 +50,7 @@ describe('TimerComponent', () => {
     const onTimeUp = vi.fn();
 
     // Test with 20% time remaining (should be warning)
-    const { container, rerender } = render(
+    const { container } = render(
       <TimerComponent totalTimeSeconds={100} onTimeUp={onTimeUp} />
     );
 

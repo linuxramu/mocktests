@@ -139,13 +139,14 @@ export const TrendAnalysis: React.FC = () => {
     .slice(-10)
     .map((test, idx) => ({
       name: `Test ${idx + 1}`,
+      value: test.accuracyPercentage,
       accuracy: test.accuracyPercentage,
       score: test.overallScore,
     }));
 
   const subjectChartData = progressData.testHistory
     .slice(-5)
-    .map((test, idx) => {
+    .map((_test, idx) => {
       const data: any = { name: `Test ${idx + 1}` };
       progressData.subjectProgress.forEach(subject => {
         if (subject.recentPerformance[idx] !== undefined) {
