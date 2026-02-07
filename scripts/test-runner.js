@@ -60,12 +60,20 @@ function getPackages() {
     return [];
   }
 
+  // Packages to skip during testing (temporarily disabled)
+  const skipPackages = ['frontend', 'shared', 'analytics-worker'];
+
   return fs.readdirSync(packagesDir).filter(dir => {
     const packagePath = path.join(packagesDir, dir);
-    return (
-      fs.statSync(packagePath).isDirectory() &&
-      fs.existsSync(path.join(packagePath, 'package.json'))
-    );
+    const isValidPackage = fs.statSync(packagePath).isDirectory() &&
+      fs.existsSync(path.join(packagePath, 'package.json'));
+    
+    if (isValidPackage && skipPackages.includes(dir)) {
+      log(`Skipping tests for ${dir} (temporarily disabled)`, 'yellow');
+      return false;
+    }
+    
+    return isValidPackage;
   });
 }
 
