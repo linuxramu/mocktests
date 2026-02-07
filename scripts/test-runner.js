@@ -65,14 +65,15 @@ function getPackages() {
 
   return fs.readdirSync(packagesDir).filter(dir => {
     const packagePath = path.join(packagesDir, dir);
-    const isValidPackage = fs.statSync(packagePath).isDirectory() &&
+    const isValidPackage =
+      fs.statSync(packagePath).isDirectory() &&
       fs.existsSync(path.join(packagePath, 'package.json'));
-    
+
     if (isValidPackage && skipPackages.includes(dir)) {
       log(`Skipping tests for ${dir} (temporarily disabled)`, 'yellow');
       return false;
     }
-    
+
     return isValidPackage;
   });
 }
