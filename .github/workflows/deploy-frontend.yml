@@ -28,6 +28,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Build shared package
+        run: npm run build --workspace=packages/shared
+
       # Temporarily disabled - tests need fixing
       # - name: Run frontend tests
       #   run: npm run test:frontend
@@ -64,6 +67,9 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+
+      - name: Build shared package
+        run: npm run build --workspace=packages/shared
 
       - name: Build frontend
         run: npm run build:frontend
