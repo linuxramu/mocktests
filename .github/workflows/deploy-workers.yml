@@ -98,7 +98,7 @@ jobs:
             echo "⚠️ Wrangler authentication failed, will attempt deployment anyway"
           fi
         env:
-          CLOUDFLARE_API_KEY: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_EMAIL: ${{ secrets.CLOUDFLARE_EMAIL }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         continue-on-error: true
@@ -115,7 +115,7 @@ jobs:
           echo "=== Wrangler.toml contents ==="
           cat wrangler.toml
         env:
-          CLOUDFLARE_API_KEY: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_EMAIL: ${{ secrets.CLOUDFLARE_EMAIL }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         continue-on-error: true
@@ -125,7 +125,7 @@ jobs:
           cd packages/auth-worker
           npx wrangler deploy --env ${{ github.ref == 'refs/heads/main' && 'production' || 'development' }}
         env:
-          CLOUDFLARE_API_KEY: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_EMAIL: ${{ secrets.CLOUDFLARE_EMAIL }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
 
@@ -186,7 +186,7 @@ jobs:
             echo "⚠️ Wrangler authentication failed, will attempt deployment anyway"
           fi
         env:
-          CLOUDFLARE_API_KEY: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_EMAIL: ${{ secrets.CLOUDFLARE_EMAIL }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         continue-on-error: true
@@ -196,7 +196,7 @@ jobs:
           cd packages/test-engine-worker
           npx wrangler deploy --env ${{ github.ref == 'refs/heads/main' && 'production' || 'development' }}
         env:
-          CLOUDFLARE_API_KEY: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_EMAIL: ${{ secrets.CLOUDFLARE_EMAIL }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
 
@@ -257,7 +257,7 @@ jobs:
             echo "⚠️ Wrangler authentication failed, will attempt deployment anyway"
           fi
         env:
-          CLOUDFLARE_API_KEY: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_EMAIL: ${{ secrets.CLOUDFLARE_EMAIL }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         continue-on-error: true
@@ -267,7 +267,7 @@ jobs:
           cd packages/ai-worker
           npx wrangler deploy --env ${{ github.ref == 'refs/heads/main' && 'production' || 'development' }}
         env:
-          CLOUDFLARE_API_KEY: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_EMAIL: ${{ secrets.CLOUDFLARE_EMAIL }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
 
@@ -328,7 +328,7 @@ jobs:
             echo "⚠️ Wrangler authentication failed, will attempt deployment anyway"
           fi
         env:
-          CLOUDFLARE_API_KEY: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_EMAIL: ${{ secrets.CLOUDFLARE_EMAIL }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         continue-on-error: true
@@ -338,7 +338,7 @@ jobs:
           cd packages/analytics-worker
           npx wrangler deploy --env ${{ github.ref == 'refs/heads/main' && 'production' || 'development' }}
         env:
-          CLOUDFLARE_API_KEY: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_EMAIL: ${{ secrets.CLOUDFLARE_EMAIL }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
 
