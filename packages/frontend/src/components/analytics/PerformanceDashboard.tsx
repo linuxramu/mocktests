@@ -122,7 +122,7 @@ export const PerformanceDashboard: React.FC = () => {
         <div className="metric-card">
           <h3>Accuracy</h3>
           <div className="metric-value">
-            {metrics.accuracyPercentage.toFixed(1)}%
+            {metrics.accuracyPercentage?.toFixed(1) ?? '0.0'}%
           </div>
           <div className="metric-label">Overall Accuracy</div>
         </div>
@@ -138,7 +138,9 @@ export const PerformanceDashboard: React.FC = () => {
         <div className="metric-card">
           <h3>Confidence</h3>
           <div className="metric-value">
-            {Math.round(metrics.thinkingAbilityAssessment.confidenceScore)}
+            {Math.round(
+              metrics.thinkingAbilityAssessment?.confidenceScore ?? 0
+            )}
           </div>
           <div className="metric-label">Score (0-100)</div>
         </div>
@@ -147,7 +149,7 @@ export const PerformanceDashboard: React.FC = () => {
       <div className="subject-analysis-section">
         <h3>Subject-wise Performance</h3>
         <div className="subject-cards">
-          {metrics.subjectWiseAnalysis.map(subject => (
+          {metrics.subjectWiseAnalysis?.map(subject => (
             <div key={subject.subject} className="subject-card">
               <h4>
                 {subject.subject.charAt(0).toUpperCase() +
@@ -157,7 +159,7 @@ export const PerformanceDashboard: React.FC = () => {
                 <div className="stat">
                   <span className="stat-label">Accuracy:</span>
                   <span className="stat-value">
-                    {subject.accuracyPercentage.toFixed(1)}%
+                    {subject.accuracyPercentage?.toFixed(1) ?? '0.0'}%
                   </span>
                 </div>
                 <div className="stat">
@@ -204,23 +206,23 @@ export const PerformanceDashboard: React.FC = () => {
           <div className="time-stat">
             <span className="time-label">Fast (&lt;60s):</span>
             <span className="time-value">
-              {metrics.timeManagementAnalysis.fastQuestions}
+              {metrics.timeManagementAnalysis?.fastQuestions ?? 0}
             </span>
           </div>
           <div className="time-stat">
             <span className="time-label">Normal (60-120s):</span>
             <span className="time-value">
-              {metrics.timeManagementAnalysis.normalQuestions}
+              {metrics.timeManagementAnalysis?.normalQuestions ?? 0}
             </span>
           </div>
           <div className="time-stat">
             <span className="time-label">Slow (&gt;120s):</span>
             <span className="time-value">
-              {metrics.timeManagementAnalysis.slowQuestions}
+              {metrics.timeManagementAnalysis?.slowQuestions ?? 0}
             </span>
           </div>
         </div>
-        {metrics.timeManagementAnalysis.suggestions.length > 0 && (
+        {metrics.timeManagementAnalysis?.suggestions?.length > 0 && (
           <div className="time-suggestions">
             <h4>Suggestions:</h4>
             <ul>
@@ -240,29 +242,29 @@ export const PerformanceDashboard: React.FC = () => {
           <div className="thinking-stat">
             <span className="thinking-label">Quick Correct:</span>
             <span className="thinking-value">
-              {metrics.thinkingAbilityAssessment.quickCorrectAnswers}
+              {metrics.thinkingAbilityAssessment?.quickCorrectAnswers ?? 0}
             </span>
           </div>
           <div className="thinking-stat">
             <span className="thinking-label">Thoughtful Correct:</span>
             <span className="thinking-value">
-              {metrics.thinkingAbilityAssessment.thoughtfulCorrectAnswers}
+              {metrics.thinkingAbilityAssessment?.thoughtfulCorrectAnswers ?? 0}
             </span>
           </div>
           <div className="thinking-stat">
             <span className="thinking-label">Impulsive Errors:</span>
             <span className="thinking-value">
-              {metrics.thinkingAbilityAssessment.impulsiveErrors}
+              {metrics.thinkingAbilityAssessment?.impulsiveErrors ?? 0}
             </span>
           </div>
           <div className="thinking-stat">
             <span className="thinking-label">Confusion Errors:</span>
             <span className="thinking-value">
-              {metrics.thinkingAbilityAssessment.confusionErrors}
+              {metrics.thinkingAbilityAssessment?.confusionErrors ?? 0}
             </span>
           </div>
         </div>
-        {metrics.thinkingAbilityAssessment.insights.length > 0 && (
+        {metrics.thinkingAbilityAssessment?.insights?.length > 0 && (
           <div className="thinking-insights">
             <h4>Insights:</h4>
             <ul>

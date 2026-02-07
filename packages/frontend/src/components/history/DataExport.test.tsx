@@ -9,6 +9,14 @@ global.fetch = vi.fn();
 global.URL.createObjectURL = vi.fn(() => 'mock-url');
 global.URL.revokeObjectURL = vi.fn();
 
+// Mock document.createElement for download links
+const mockLink = {
+  click: vi.fn(),
+  href: '',
+  download: '',
+  style: {},
+};
+
 describe('DataExport', () => {
   const mockUserId = 'user-123';
   const mockHistory = [
@@ -44,17 +52,23 @@ describe('DataExport', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    // Mock document.createElement and appendChild
-    document.createElement = vi.fn(tag => {
-      const element = {
-        click: vi.fn(),
-        href: '',
-        download: '',
-      };
-      return element as any;
+
+    // Mock document.createElement
+    const originalCreateElement = document.createElement.bind(document);
+    vi.spyOn(document, 'createElement').mockImplementation((tag: string) => {
+      if (tag === 'a') {
+        return mockLink as any;
+      }
+      return originalCreateElement(tag);
     });
-    document.body.appendChild = vi.fn();
-    document.body.removeChild = vi.fn();
+
+    // Mock appendChild and removeChild
+    vi.spyOn(document.body, 'appendChild').mockImplementation(
+      () => mockLink as any
+    );
+    vi.spyOn(document.body, 'removeChild').mockImplementation(
+      () => mockLink as any
+    );
   });
 
   it('should render export options', () => {

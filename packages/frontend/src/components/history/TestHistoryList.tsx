@@ -164,8 +164,9 @@ export const TestHistoryList: React.FC<TestHistoryListProps> = ({
 
       <div className="history-filters">
         <div className="filter-group">
-          <label>Status:</label>
+          <label htmlFor="status-filter">Status:</label>
           <select
+            id="status-filter"
             value={filterStatus}
             onChange={e => setFilterStatus(e.target.value)}
           >
@@ -177,8 +178,9 @@ export const TestHistoryList: React.FC<TestHistoryListProps> = ({
         </div>
 
         <div className="filter-group">
-          <label>Test Type:</label>
+          <label htmlFor="test-type-filter">Test Type:</label>
           <select
+            id="test-type-filter"
             value={filterTestType}
             onChange={e => setFilterTestType(e.target.value)}
           >

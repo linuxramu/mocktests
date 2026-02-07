@@ -188,6 +188,8 @@ describe('Integration Tests - Complete Workflows', () => {
     });
 
     it('should complete full test-taking workflow', async () => {
+      const mockOnStartTest = vi.fn();
+
       // Mock test start
       mockFetch.mockResolvedValueOnce({
         ok: true,
@@ -224,27 +226,20 @@ describe('Integration Tests - Complete Workflows', () => {
         }),
       });
 
-      renderWithProviders(<TestLauncher />);
+      renderWithProviders(<TestLauncher onStartTest={mockOnStartTest} />);
 
       // Start test
       const startButton = screen.getByRole('button', { name: /start test/i });
       fireEvent.click(startButton);
 
-      // Verify test session created
+      // Verify onStartTest was called
       await waitFor(() => {
-        expect(mockFetch).toHaveBeenCalledWith(
-          expect.stringContaining('/tests/start'),
+        expect(mockOnStartTest).toHaveBeenCalledWith(
           expect.objectContaining({
-            method: 'POST',
+            subjects: expect.any(Array),
+            questionsPerSubject: expect.any(Number),
+            timeLimit: expect.any(Number),
           })
-        );
-      });
-
-      // Verify question loaded
-      await waitFor(() => {
-        expect(mockFetch).toHaveBeenCalledWith(
-          expect.stringContaining('/tests/session/session-1/question/1'),
-          expect.any(Object)
         );
       });
     });

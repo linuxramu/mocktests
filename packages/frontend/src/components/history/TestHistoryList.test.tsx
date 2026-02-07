@@ -75,7 +75,7 @@ describe('TestHistoryList', () => {
     render(<TestHistoryList userId={mockUserId} />);
 
     await waitFor(() => {
-      expect(screen.getByText('Full Test')).toBeInTheDocument();
+      expect(screen.getByText('Showing 3 of 3 tests')).toBeInTheDocument();
     });
 
     // Filter by completed

@@ -68,17 +68,19 @@ describe('RegisterForm', () => {
   it('validates invalid email format', async () => {
     renderRegisterForm();
 
-    fireEvent.change(screen.getByLabelText('Full Name'), {
-      target: { value: 'Test User' },
-    });
-    fireEvent.change(screen.getByLabelText('Email'), {
-      target: { value: 'invalid-email' },
-    });
-    fireEvent.change(screen.getByLabelText('Password'), {
-      target: { value: 'Password123' },
-    });
-    fireEvent.change(screen.getByLabelText('Confirm Password'), {
-      target: { value: 'Password123' },
+    await act(async () => {
+      fireEvent.change(screen.getByLabelText('Full Name'), {
+        target: { value: 'Test User' },
+      });
+      fireEvent.change(screen.getByLabelText('Email'), {
+        target: { value: 'invalid-email' },
+      });
+      fireEvent.change(screen.getByLabelText('Password'), {
+        target: { value: 'Password123' },
+      });
+      fireEvent.change(screen.getByLabelText('Confirm Password'), {
+        target: { value: 'Password123' },
+      });
     });
 
     await act(async () => {
