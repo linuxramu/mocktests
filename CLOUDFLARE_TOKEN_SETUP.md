@@ -5,12 +5,15 @@
 Your Cloudflare API Token needs the following permissions:
 
 ### Account Permissions
+
 - **Account Settings** → Read
 
-### Zone Permissions  
+### Zone Permissions
+
 - **Cloudflare Pages** → Edit
 
 ### User Permissions
+
 - **User Details** → Read
 
 ## How to Create/Update the Token
@@ -24,6 +27,7 @@ Your Cloudflare API Token needs the following permissions:
 ## GitHub Secrets Required
 
 Add these secrets to your GitHub repository:
+
 - `CLOUDFLARE_API_TOKEN` - Your API token with the permissions above
 - `CLOUDFLARE_ACCOUNT_ID` - Your Cloudflare account ID
 
