@@ -4,7 +4,7 @@ import { PerformanceLineChart, MultiLineChart } from './charts/ChartComponents';
 import { MetricsGrid, MetricCard } from './MetricsCards';
 import './TrendAnalysis.css';
 
-interface TrendAnalysis {
+interface TrendAnalysisData {
   userId: string;
   overallTrend: 'improving' | 'declining' | 'stable';
   subjectTrends: {
@@ -37,7 +37,7 @@ interface ProgressData {
 
 export const TrendAnalysis: React.FC = () => {
   const { user } = useAuth();
-  const [trendData, setTrendData] = useState<TrendAnalysis | null>(null);
+  const [trendData, setTrendData] = useState<TrendAnalysisData | null>(null);
   const [progressData, setProgressData] = useState<ProgressData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);

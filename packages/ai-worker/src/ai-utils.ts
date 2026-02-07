@@ -403,7 +403,7 @@ export function assessDifficulty(
   else if (question.questionText.length > 100) score += 1;
 
   // Questions with calculations are typically harder
-  if (/\d+\s*[×÷+\-]\s*\d+/.test(question.questionText)) score += 1;
+  if (/\d+\s*[×÷+-]\s*\d+/.test(question.questionText)) score += 1;
 
   // Questions with scientific notation are harder
   if (/\d+\s*×\s*10[⁰¹²³⁴⁵⁶⁷⁸⁹⁻]+/.test(question.questionText)) score += 2;

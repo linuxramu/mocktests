@@ -10,7 +10,7 @@ import {
   booleanToSqlite,
   parseJsonSafe,
   isValidEmail,
-  sanitizeInput,
+  sanitizeSqlInput,
   generateUUID,
   rowToUser,
   userToRow,
@@ -86,16 +86,16 @@ describe('Database Utility Functions', () => {
 
   describe('Input sanitization', () => {
     it('should remove SQL injection characters', () => {
-      expect(sanitizeInput("test'; DROP TABLE users;--")).toBe(
+      expect(sanitizeSqlInput("test'; DROP TABLE users;--")).toBe(
         'test DROP TABLE users--'
       );
-      expect(sanitizeInput('normal text')).toBe('normal text');
-      expect(sanitizeInput('test"value')).toBe('testvalue');
-      expect(sanitizeInput("test'value")).toBe('testvalue');
+      expect(sanitizeSqlInput('normal text')).toBe('normal text');
+      expect(sanitizeSqlInput('test"value')).toBe('testvalue');
+      expect(sanitizeSqlInput("test'value")).toBe('testvalue');
     });
 
     it('should handle empty strings', () => {
-      expect(sanitizeInput('')).toBe('');
+      expect(sanitizeSqlInput('')).toBe('');
     });
   });
 

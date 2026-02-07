@@ -55,7 +55,7 @@ describe('TimerComponent', () => {
     );
 
     // Initially should be normal
-    let timerComponent = container.querySelector('.timer-component');
+    const timerComponent = container.querySelector('.timer-component');
     expect(timerComponent).toHaveClass('normal');
   });
 

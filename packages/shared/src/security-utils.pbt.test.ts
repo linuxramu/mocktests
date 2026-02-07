@@ -55,6 +55,7 @@ describe('Property 9: Security and Access Control', () => {
           expect(sanitized).not.toContain('\0');
 
           // Should not contain control characters (except newlines/tabs which are trimmed)
+          // eslint-disable-next-line no-control-regex
           const hasControlChars = /[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/.test(
             sanitized
           );
@@ -76,6 +77,7 @@ describe('Property 9: Security and Access Control', () => {
           expect(sanitized).toBe(sanitized.trim());
 
           // Should not contain control characters
+          // eslint-disable-next-line no-control-regex
           const hasControlChars = /[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/.test(
             sanitized
           );

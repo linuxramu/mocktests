@@ -99,13 +99,19 @@ export class WorkerCommunicator {
         throw new Error(`Worker request failed with status ${response.status}`);
       }
 
-      const result: WorkerResponse<T> = await response.json();
+      const result = (await response.json()) as unknown;
 
-      if (!result.success) {
-        throw new Error(result.error?.message || 'Worker request failed');
+      if (!result || typeof result !== 'object') {
+        throw new Error('Invalid response format');
       }
 
-      return result.data as T;
+      const typedResult = result as WorkerResponse<T>;
+
+      if (!typedResult.success) {
+        throw new Error(typedResult.error?.message || 'Worker request failed');
+      }
+
+      return typedResult.data as T;
     } catch (error) {
       console.error(
         `Failed to communicate with worker at ${this.workerUrl}:`,

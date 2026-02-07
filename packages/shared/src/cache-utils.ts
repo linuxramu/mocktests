@@ -1,5 +1,8 @@
 // Caching utilities for Cloudflare KV and browser storage
 
+// Type definition for Cloudflare KV
+type KVNamespace = any;
+
 /**
  * Cache configuration
  */

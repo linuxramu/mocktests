@@ -291,6 +291,6 @@ export function isValidEmail(email: string): boolean {
 /**
  * Sanitize user input to prevent SQL injection
  */
-export function sanitizeInput(input: string): string {
+export function sanitizeSqlInput(input: string): string {
   return input.replace(/['"\\;]/g, '');
 }
