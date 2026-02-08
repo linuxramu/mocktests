@@ -29,6 +29,7 @@ JWT_SECRET = "dev-secret-key-change-in-production-12345678"
 ENVIRONMENT = "development"
 BCRYPT_ROUNDS = "12"
 SESSION_TIMEOUT = "86400"
+ALLOWED_ORIGINS = "http://localhost:5173,https://eamcet-platform.pages.dev"
 CORS_ORIGINS = "http://localhost:5173,https://eamcet-platform.pages.dev"
 
 # Production environment
@@ -39,6 +40,7 @@ name = "eamcet-auth-worker-prod"
 ENVIRONMENT = "production"
 BCRYPT_ROUNDS = "12"
 SESSION_TIMEOUT = "86400"
+ALLOWED_ORIGINS = "http://localhost:5173,https://eamcet-platform.pages.dev"
 CORS_ORIGINS = "http://localhost:5173,https://eamcet-platform.pages.dev"
 
 # Default environment variables for local development
@@ -46,4 +48,5 @@ CORS_ORIGINS = "http://localhost:5173,https://eamcet-platform.pages.dev"
 JWT_SECRET = "dev-secret-key-change-in-production-12345678"
 BCRYPT_ROUNDS = "12"
 SESSION_TIMEOUT = "86400"
+ALLOWED_ORIGINS = "http://localhost:5173,https://eamcet-platform.pages.dev"
 CORS_ORIGINS = "http://localhost:5173,https://eamcet-platform.pages.dev"

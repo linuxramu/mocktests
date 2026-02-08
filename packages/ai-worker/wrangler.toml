@@ -26,6 +26,7 @@ database_id = "eamcet-platform-db-dev"
 ENVIRONMENT = "development"
 QUESTION_GENERATION_TIMEOUT = "30"
 MAX_QUESTIONS_PER_BATCH = "50"
+ALLOWED_ORIGINS = "http://localhost:5173,https://eamcet-platform.pages.dev"
 CORS_ORIGINS = "http://localhost:5173,https://eamcet-platform.pages.dev"
 
 # Production environment
@@ -41,10 +42,12 @@ database_id = "eamcet-platform-db-prod"
 ENVIRONMENT = "production"
 QUESTION_GENERATION_TIMEOUT = "30"
 MAX_QUESTIONS_PER_BATCH = "50"
+ALLOWED_ORIGINS = "http://localhost:5173,https://eamcet-platform.pages.dev"
 CORS_ORIGINS = "http://localhost:5173,https://eamcet-platform.pages.dev"
 
 # Default environment variables for local development
 [vars]
 QUESTION_GENERATION_TIMEOUT = "30"
 MAX_QUESTIONS_PER_BATCH = "50"
+ALLOWED_ORIGINS = "http://localhost:5173,https://eamcet-platform.pages.dev"
 CORS_ORIGINS = "http://localhost:5173,https://eamcet-platform.pages.dev"

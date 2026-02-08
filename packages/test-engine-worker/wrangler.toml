@@ -21,6 +21,7 @@ ENVIRONMENT = "development"
 TEST_DURATION_LIMIT = "10800"
 MAX_QUESTIONS_PER_TEST = "160"
 WEBSOCKET_TIMEOUT = "300"
+ALLOWED_ORIGINS = "http://localhost:5173,https://eamcet-platform.pages.dev"
 CORS_ORIGINS = "http://localhost:5173,https://eamcet-platform.pages.dev"
 
 # Production environment
@@ -32,6 +33,7 @@ ENVIRONMENT = "production"
 TEST_DURATION_LIMIT = "10800"
 MAX_QUESTIONS_PER_TEST = "160"
 WEBSOCKET_TIMEOUT = "300"
+ALLOWED_ORIGINS = "http://localhost:5173,https://eamcet-platform.pages.dev"
 CORS_ORIGINS = "http://localhost:5173,https://eamcet-platform.pages.dev"
 
 # Default environment variables for local development
@@ -39,4 +41,5 @@ CORS_ORIGINS = "http://localhost:5173,https://eamcet-platform.pages.dev"
 TEST_DURATION_LIMIT = "10800"
 MAX_QUESTIONS_PER_TEST = "160"
 WEBSOCKET_TIMEOUT = "300"
+ALLOWED_ORIGINS = "http://localhost:5173,https://eamcet-platform.pages.dev"
 CORS_ORIGINS = "http://localhost:5173,https://eamcet-platform.pages.dev"

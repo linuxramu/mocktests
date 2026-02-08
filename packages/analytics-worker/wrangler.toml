@@ -20,6 +20,7 @@ database_id = "57035540-30f4-40a9-9572-c612c3ef4ce5"
 ENVIRONMENT = "development"
 ANALYTICS_CALCULATION_TIMEOUT = "10"
 CACHE_TTL = "3600"
+ALLOWED_ORIGINS = "http://localhost:5173,https://eamcet-platform.pages.dev"
 CORS_ORIGINS = "http://localhost:5173,https://eamcet-platform.pages.dev"
 
 # Production environment
@@ -30,10 +31,12 @@ name = "eamcet-analytics-worker-prod"
 ENVIRONMENT = "production"
 ANALYTICS_CALCULATION_TIMEOUT = "10"
 CACHE_TTL = "3600"
+ALLOWED_ORIGINS = "http://localhost:5173,https://eamcet-platform.pages.dev"
 CORS_ORIGINS = "http://localhost:5173,https://eamcet-platform.pages.dev"
 
 # Default environment variables for local development
 [vars]
 ANALYTICS_CALCULATION_TIMEOUT = "10"
 CACHE_TTL = "3600"
+ALLOWED_ORIGINS = "http://localhost:5173,https://eamcet-platform.pages.dev"
 CORS_ORIGINS = "http://localhost:5173,https://eamcet-platform.pages.dev"
