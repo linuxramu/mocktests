@@ -44,10 +44,10 @@ jobs:
       - name: Build frontend
         run: npm run build:frontend
         env:
-          VITE_AUTH_API_URL: ${{ github.ref == 'refs/heads/main' && 'https://eamcet-auth-worker-prod.workers.dev' || 'https://eamcet-auth-worker-dev.workers.dev' }}
-          VITE_TEST_ENGINE_API_URL: ${{ github.ref == 'refs/heads/main' && 'https://eamcet-test-engine-worker-prod.workers.dev' || 'https://eamcet-test-engine-worker-dev.workers.dev' }}
-          VITE_AI_API_URL: ${{ github.ref == 'refs/heads/main' && 'https://eamcet-ai-worker-prod.workers.dev' || 'https://eamcet-ai-worker-dev.workers.dev' }}
-          VITE_ANALYTICS_API_URL: ${{ github.ref == 'refs/heads/main' && 'https://eamcet-analytics-worker-prod.workers.dev' || 'https://eamcet-analytics-worker-dev.workers.dev' }}
+          VITE_AUTH_API_URL: ${{ github.ref == 'refs/heads/main' && 'https://eamcet-auth-worker-prod.ramuoncloud.workers.dev' || 'https://eamcet-auth-worker-dev.ramuoncloud.workers.dev' }}
+          VITE_TEST_ENGINE_API_URL: ${{ github.ref == 'refs/heads/main' && 'https://eamcet-test-engine-worker-prod.ramuoncloud.workers.dev' || 'https://eamcet-test-engine-worker-dev.ramuoncloud.workers.dev' }}
+          VITE_AI_API_URL: ${{ github.ref == 'refs/heads/main' && 'https://eamcet-ai-worker-prod.ramuoncloud.workers.dev' || 'https://eamcet-ai-worker-dev.ramuoncloud.workers.dev' }}
+          VITE_ANALYTICS_API_URL: ${{ github.ref == 'refs/heads/main' && 'https://eamcet-analytics-worker-prod.ramuoncloud.workers.dev' || 'https://eamcet-analytics-worker-dev.ramuoncloud.workers.dev' }}
           VITE_ENVIRONMENT: ${{ github.ref == 'refs/heads/main' && 'production' || 'development' }}
 
   deploy-frontend:
@@ -74,10 +74,10 @@ jobs:
       - name: Build frontend
         run: npm run build:frontend
         env:
-          VITE_AUTH_API_URL: ${{ github.ref == 'refs/heads/main' && 'https://eamcet-auth-worker-prod.workers.dev' || 'https://eamcet-auth-worker-dev.workers.dev' }}
-          VITE_TEST_ENGINE_API_URL: ${{ github.ref == 'refs/heads/main' && 'https://eamcet-test-engine-worker-prod.workers.dev' || 'https://eamcet-test-engine-worker-dev.workers.dev' }}
-          VITE_AI_API_URL: ${{ github.ref == 'refs/heads/main' && 'https://eamcet-ai-worker-prod.workers.dev' || 'https://eamcet-ai-worker-dev.workers.dev' }}
-          VITE_ANALYTICS_API_URL: ${{ github.ref == 'refs/heads/main' && 'https://eamcet-analytics-worker-prod.workers.dev' || 'https://eamcet-analytics-worker-dev.workers.dev' }}
+          VITE_AUTH_API_URL: ${{ github.ref == 'refs/heads/main' && 'https://eamcet-auth-worker-prod.ramuoncloud.workers.dev' || 'https://eamcet-auth-worker-dev.ramuoncloud.workers.dev' }}
+          VITE_TEST_ENGINE_API_URL: ${{ github.ref == 'refs/heads/main' && 'https://eamcet-test-engine-worker-prod.ramuoncloud.workers.dev' || 'https://eamcet-test-engine-worker-dev.ramuoncloud.workers.dev' }}
+          VITE_AI_API_URL: ${{ github.ref == 'refs/heads/main' && 'https://eamcet-ai-worker-prod.ramuoncloud.workers.dev' || 'https://eamcet-ai-worker-dev.ramuoncloud.workers.dev' }}
+          VITE_ANALYTICS_API_URL: ${{ github.ref == 'refs/heads/main' && 'https://eamcet-analytics-worker-prod.ramuoncloud.workers.dev' || 'https://eamcet-analytics-worker-dev.ramuoncloud.workers.dev' }}
           VITE_ENVIRONMENT: ${{ github.ref == 'refs/heads/main' && 'production' || 'development' }}
 
       - name: Set project name
