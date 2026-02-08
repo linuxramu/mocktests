@@ -42,6 +42,7 @@ BCRYPT_ROUNDS = "12"
 SESSION_TIMEOUT = "86400"
 ALLOWED_ORIGINS = "http://localhost:5173,https://eamcet-platform.pages.dev"
 CORS_ORIGINS = "http://localhost:5173,https://eamcet-platform.pages.dev"
+JWT_SECRET = "production-secret-key-CHANGE-THIS-TO-SECURE-VALUE-123456789"
 
 # Default environment variables for local development
 [vars]
