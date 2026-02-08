@@ -36,13 +36,18 @@ CORS_ORIGINS = "http://localhost:5173,https://eamcet-platform.pages.dev"
 [env.production]
 name = "eamcet-auth-worker-prod"
 
+[[env.production.d1_databases]]
+binding = "DB"
+database_name = "eamcet-platform-db"
+database_id = "c2f1c917-21aa-4403-994c-014980f4651a"
+
 [env.production.vars]
 ENVIRONMENT = "production"
 BCRYPT_ROUNDS = "12"
 SESSION_TIMEOUT = "86400"
 ALLOWED_ORIGINS = "http://localhost:5173,https://eamcet-platform.pages.dev"
 CORS_ORIGINS = "http://localhost:5173,https://eamcet-platform.pages.dev"
-JWT_SECRET = "production-secret-key-CHANGE-THIS-TO-SECURE-VALUE-123456789"
+# JWT_SECRET is set as a Cloudflare secret (not in wrangler.toml for security)
 
 # Default environment variables for local development
 [vars]
